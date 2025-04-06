@@ -1,6 +1,8 @@
 import { SearchBar, Swiper, Space, Card, Avatar } from "antd-mobile";
 import { MoreOutline, ScanningOutline, DownFill } from "antd-mobile-icons";
 
+import banner from "../assets/banner/banner2@2x.png";
+
 export const Home = () => {
   return (
     <div
@@ -37,18 +39,12 @@ export const Home = () => {
       <Swiper loop autoplay className="mb-[11px]">
         <Swiper.Item>
           <div className="px-[12px] pt-[12px] ">
-            <img
-              className="rounded-[5px]"
-              src="http://files.uefun.net/upload/picture/banner2@2x.png"
-            />
+            <img className="rounded-[5px]" src={banner} />
           </div>
         </Swiper.Item>
         <Swiper.Item>
           <div className="px-[12px] pt-[12px] ">
-            <img
-              className="rounded-[5px]"
-              src="http://files.uefun.net/upload/picture/banner2@2x.png"
-            />
+            <img className="rounded-[5px]" src={banner} />
           </div>
         </Swiper.Item>
       </Swiper>
