@@ -1,8 +1,18 @@
-import { Routes, Route, Outlet, Navigate } from "react-router";
-
+import {
+  Routes,
+  Route,
+  Outlet,
+  Navigate,
+  useNavigate,
+  useLocation,
+} from "react-router";
 import type { FC } from "react";
 import { TabBar } from "antd-mobile";
-import { useNavigate, useLocation } from "react-router";
+import { createAppKit } from "@reown/appkit/react";
+import { WagmiProvider } from "wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import { projectId, metadata, networks, wagmiAdapter } from "./config";
 
 import { Home } from "./views/Home";
 import { Chat } from "./views/Chat";
@@ -14,6 +24,32 @@ import indexIconSelected from "./assets/tabbar/index_icon_selected.png";
 import myIcon from "./assets/tabbar/my_icon.png";
 import myIconSelected from "./assets/tabbar/my_icon_selected.png";
 
+const queryClient = new QueryClient();
+
+const generalConfig = {
+  projectId,
+  networks,
+  metadata,
+  themeMode: "light" as const,
+  themeVariables: {
+    "--w3m-accent": "#000000",
+  },
+};
+
+// Create modal
+createAppKit({
+  adapters: [wagmiAdapter],
+  ...generalConfig,
+  features: {
+    analytics: true, // Optional - defaults to your Cloud configuration
+    socials: false,
+    email: false,
+  },
+  themeVariables: {
+    '--w3m-accent': '#000000',
+  }
+});
+
 const Bottom: FC = () => {
   const location = useLocation();
   const { pathname } = location;
@@ -21,7 +57,7 @@ const Bottom: FC = () => {
   const navigate = useNavigate();
 
   const setRouteActive = (value: string) => {
-    if(value === "/chat") return;
+    if (value === "/chat") return;
     navigate(value);
   };
 
@@ -87,14 +123,18 @@ const Bottom: FC = () => {
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Bottom />}>
-        <Route index element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/chat" element={<Chat />} />
-        <Route path="/me" element={<Me />} />
-      </Route>
-    </Routes>
+    <WagmiProvider config={wagmiAdapter.wagmiConfig}>
+      <QueryClientProvider client={queryClient}>
+        <Routes>
+          <Route path="/" element={<Bottom />}>
+            <Route index element={<Navigate to="/home" replace />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/me" element={<Me />} />
+          </Route>
+        </Routes>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }
 
