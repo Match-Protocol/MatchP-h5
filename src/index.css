@@ -1,68 +1,104 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+@import "tailwindcss";
+
+.adm-tab-bar-wrap {
+  overflow: visible !important;
+}
+
+.adm-tab-bar-item-title-with-icon {
+  margin-top: 8px !important;
+  margin-bottom: 3px !important;
+}
+
+.title-h2 {
+  font-size: 18px;
+  font-family: Source Han Sans SC-Medium, Source Han Sans SC;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 27px;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tl-font {
+  font-size: 13px;
+  font-family: PingFang SC, PingFang SC;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  color: #767676;
+  line-height: 13px;
+  margin-right: 4px;
+  max-width: 126px;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: normal !important;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
+.tl-tribe-type {
+  height: 16px;
+  border-radius: 4px;
+  width: auto;
+  background-color: #454545;
+  padding: 0 3px;
+  border: 2px solid #a4c5e9;
+  -webkit-transform: skew(-15deg);
+  transform: skew(-15deg);
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+  justify-content: center;
+  align-items: center;
+  span {
+    font-size: 11px;
+    line-height: 11px;
+    font-family: graceFont;
+    font-weight: 400;
+    text-align: center;
+    background: linear-gradient(90deg, #61f1ee 0%, #e29ce4 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
-  a:hover {
-    color: #747bff;
+}
+
+.image-24 {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  .image-24-icon1 {
+    background-image: url(https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/time.png);
+    background-position: 0% 0%;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
   }
-  button {
-    background-color: #f9f9f9;
+  .image-24-icon2 {
+    background-image: url(https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/location.png);
+    background-position: 0% 0%;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+}
+
+.tl-line {
+  width: 0;
+  height: 13px;
+  border: 1px solid #c4c4c4;
+  margin: 0 5px;
+}
+
+.register-btn {
+  color: #454545 !important;
+  background: #50f5ff !important;
+  border-radius: 25px !important;
+  border: none !important;
+  padding: 0 29px;
+  div {
+    font-family: AlibabaPuHuiTi, AlibabaPuHuiTi;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 27px;
   }
 }
