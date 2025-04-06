@@ -170,7 +170,11 @@ export const Home = () => {
         }}
       >
         <div className="m-[11px] mt-0">
-          <Card>
+          <Card
+            style={
+              { "--adm-card-padding-inline": "10px" } as React.CSSProperties
+            }
+          >
             <div className="flex gap-[5px]">
               <div className="relative min-w-[162px] h-[114px]">
                 <img
