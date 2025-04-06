@@ -46,8 +46,8 @@ createAppKit({
     email: false,
   },
   themeVariables: {
-    '--w3m-accent': '#000000',
-  }
+    "--w3m-accent": "#000000",
+  },
 });
 
 const Bottom: FC = () => {
@@ -111,12 +111,19 @@ const Bottom: FC = () => {
 
   return (
     <div className="h-[100vh] flex flex-col justify-between">
-      <Outlet />
-      <TabBar activeKey={pathname} onChange={(value) => setRouteActive(value)}>
-        {tabs.map((item) => (
-          <TabBar.Item key={item.key} icon={item.icon} title={item.title} />
-        ))}
-      </TabBar>
+      <div className="flex-1 overflow-auto pb-[50px]">
+        <Outlet />
+      </div>
+      <div className="fixed bottom-0 left-0 right-0 bg-white z-10">
+        <TabBar
+          activeKey={pathname}
+          onChange={(value) => setRouteActive(value)}
+        >
+          {tabs.map((item) => (
+            <TabBar.Item key={item.key} icon={item.icon} title={item.title} />
+          ))}
+        </TabBar>
+      </div>
     </div>
   );
 };

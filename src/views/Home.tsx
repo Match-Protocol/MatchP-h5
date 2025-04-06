@@ -22,8 +22,8 @@ export const Home = () => {
       >
         <img
           src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/inform_icon.png"
-          width="27px"
-          height="27px"
+          width="23px"
+          height="23px"
         />
 
         <div className="flex-1 mx-2">
@@ -31,8 +31,8 @@ export const Home = () => {
         </div>
 
         <Space>
-          <ScanningOutline className="text-gray-600" fontSize={20} />
-          <MoreOutline className="text-gray-600" fontSize={20} />
+          <ScanningOutline className="text-gray-600" fontSize={23} />
+          <MoreOutline className="text-gray-600" fontSize={23} />
         </Space>
       </div>
       {/* 轮播图 */}

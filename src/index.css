@@ -102,3 +102,12 @@
     line-height: 27px;
   }
 }
+
+
+.tl-font-32-34 {
+  font-size: 15px;
+  font-family: Source Han Sans SC-Medium, Source Han Sans SC;
+  font-weight: 400;
+  line-height: 15px;
+  color: #342A25;
+}
