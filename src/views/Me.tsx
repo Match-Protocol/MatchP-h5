@@ -1,7 +1,4 @@
-import {
-  useAppKit,
-  useAppKitAccount,
-} from "@reown/appkit/react";
+import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 
 import { Avatar, Tag } from "antd-mobile";
 import { SetOutline, ScanningOutline } from "antd-mobile-icons";
@@ -22,7 +19,7 @@ export const Me = () => {
   // };
 
   return (
-    <div className="flex h-[100%] flex-col  bg-[#f5f5f5]">
+    <div className="flex flex-col  bg-[#f5f5f5]">
       {/* 顶部背景和个人信息 */}
       <div
         style={{
@@ -118,7 +115,7 @@ export const Me = () => {
                 className="w-[15px] h-[15px]"
                 src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/my_wz.png"
               ></img>
-              <span className="text-gray-300">玩籽</span>
+              <span className="text-gray-300">MATCH</span>
               <span className="text-white font-bold">1000</span>
             </div>
             <div className="flex-1 py-3 px-4 flex items-center gap-[7px]">
@@ -181,16 +178,33 @@ export const Me = () => {
       </div>
 
       <div className="flex flex-col bg-white mx-4 mt-4 rounded-lg p-2 gap-[5px]">
-        <div className="flex flex-1 gap-[5px]">
+        <div className="flex flex-1 gap-[5px] relative">
           <img
-            className="w-[55px] h-[55px]"
+            className="w-[55px] h-[55px]  rounded-[5px]"
             src="https://goin.obs.cn-north-4.myhuaweicloud.com/wechat/1742555171108845604620754732.jpg"
           />
+          <div
+            style={{ background: "rgba(0, 0, 0, 0.5)" }}
+            className="flex gap-[3px] h-[13px] w-[55px] justify-center items-center absolute bottom-0 rounded-[5px]"
+          >
+            <img
+              className="w-[10px] h-[10px] rounded-[5px]"
+              src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/tribe/owner_icon.png"
+            />
+            <span className="text-[#50F5FF] text-[11px] leading-[13px] font-[700]">
+              主理人
+            </span>
+          </div>
           <div className="flex flex-1 flex-col justify-between">
             <div className="flex justify-between">
-              <div className="text-[15px] text-[#000000]">猜你想</div>
+              <div className="flex items-center gap-[3px]">
+                <div className="text-[15px] text-[#000000]">猜你想</div>
+                <div className="tl-tribe-type">
+                  <span>DAO</span>
+                </div>
+              </div>
               <div
-                className="flex rounded-[10px] px-[13px] py-[5px]"
+                className="flex rounded-[10px] px-[10px] py-[5px]"
                 style={{
                   background:
                     "linear-gradient(90deg, #F9A9F2 0%, #B9FBFF 100%)",
@@ -215,8 +229,9 @@ export const Me = () => {
           生活的不确定性，正是我们希望的来源
         </div>
       </div>
+
       {/* 任务列表 */}
-      <div className="bg-white mx-4 mt-4 rounded-lg p-2">
+      <div className="bg-white mx-4 mt-4 rounded-lg p-2 mb-[25px]">
         <div className="mt-2">
           <div className="flex justify-between items-center">
             <div className="tl-font-32-34">周任务/社区任务</div>
@@ -284,6 +299,36 @@ export const Me = () => {
                 src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/my_wz.png"
               ></img>{" "}
               <span className="text-[#1ACDE8] font-bold">+60</span>
+            </div>
+          </div>
+          <div className="flex justify-between items-center py-3">
+            <span className="text-sm">活动报名 (0/200)</span>
+            <div className="flex items-center">
+              <img
+                className="w-[15px] h-[15px]"
+                src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/my_wz.png"
+              ></img>{" "}
+              <span className="text-[#1ACDE8] font-bold">+5</span>
+            </div>
+          </div>
+          <div className="flex justify-between items-center py-3">
+            <span className="text-sm">发布任务 (0/8)</span>
+            <div className="flex items-center">
+              <img
+                className="w-[15px] h-[15px]"
+                src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/my_wz.png"
+              ></img>
+              <span className="text-[#1ACDE8] font-bold">+40</span>
+            </div>
+          </div>
+          <div className="flex justify-between items-center py-3">
+            <span className="text-sm">参加任务 (0/8)</span>
+            <div className="flex items-center">
+              <img
+                className="w-[15px] h-[15px]"
+                src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/my_wz.png"
+              ></img>{" "}
+              <span className="text-[#1ACDE8] font-bold">+20</span>
             </div>
           </div>
         </div>

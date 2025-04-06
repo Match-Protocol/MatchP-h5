@@ -85,7 +85,7 @@ const Bottom: FC = () => {
       icon: (
         <img
           src={createIcon}
-          className="w-[55px] h-[55px] -translate-y-[45px]"
+          className="w-[55px] h-[55px] -translate-y-[35px]"
         />
       ),
     },
