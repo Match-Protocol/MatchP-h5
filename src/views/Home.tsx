@@ -1,8 +1,11 @@
-import { SearchBar, Swiper, Space, Card, Avatar } from "antd-mobile";
+import { SearchBar, Swiper, Space } from "antd-mobile";
 import { MoreOutline, ScanningOutline, DownFill } from "antd-mobile-icons";
 import { useNavigate } from "react-router";
 
 import banner from "../assets/banner/banner2@2x.png";
+import activity1 from "../assets/activity/activity1.jpg";
+import activity2 from "../assets/activity/activity2.png";
+import hackathon from "../assets/icon/hackathon.png";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -45,11 +48,11 @@ export const Home = () => {
             <img className="rounded-[5px]" src={banner} />
           </div>
         </Swiper.Item>
-        <Swiper.Item>
+        {/* <Swiper.Item>
           <div className="px-[12px] pt-[12px] ">
             <img className="rounded-[5px]" src={banner} />
           </div>
-        </Swiper.Item>
+        </Swiper.Item> */}
       </Swiper>
 
       {/* 筛选列表 */}
@@ -77,7 +80,7 @@ export const Home = () => {
               src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/home/ball.png"
             />
             <span className="-ml-[5px] text-[18px] text-[#767676] leading-[28px] font-bold ">
-              运动户外
+              运动赛事
             </span>
           </Space>
           <Space align="center">
@@ -87,7 +90,13 @@ export const Home = () => {
               src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/home/9.png"
             />
             <span className="-ml-[5px] text-[18px] text-[#767676] leading-[28px] font-bold">
-              体验工坊
+              亲子赛事
+            </span>
+          </Space>
+          <Space align="center">
+            <img width="20px" height="20px" src={hackathon} />
+            <span className="-ml-[5px] text-[18px] text-[#767676] leading-[28px] font-bold">
+              黑客松
             </span>
           </Space>
         </Space>
@@ -173,7 +182,14 @@ export const Home = () => {
         }}
       >
         <div className="m-[11px] mt-0">
-          <Card
+          <div onClick={() => navigate("/detail")}>
+            <img src={activity1} />
+          </div>
+
+<div>            <img src={activity2} />
+</div>
+
+          {/* <Card
             style={
               { "--adm-card-padding-inline": "10px" } as React.CSSProperties
             }
@@ -222,9 +238,9 @@ export const Home = () => {
                       backgroundRepeat: "no-repeat",
                     }}
                   ></div>
-                  <div className="tl-font">Variety Labs</div>
+                  <div className="tl-font">Tin Tin Land</div>
                   <div className="tl-tribe-type">
-                    <span>DAO</span>
+                    <span>俱乐部</span>
                   </div>
                 </div>
                 <div className="flex gap-[5px]">
@@ -274,15 +290,14 @@ export const Home = () => {
               </div>
               <div className="flex flex-1 justify-between">
                 <div className="mt-[10px]">4人已报名</div>
-                <div
-                  onClick={() => navigate("/detail")}
-                  className="mt-[6px] register-btn"
-                >
+                <div className="mt-[6px] register-btn">
                   <div>免费</div>
                 </div>
               </div>
             </div>
-          </Card>
+          </Card> */}
+  
+  
         </div>
       </div>
     </div>

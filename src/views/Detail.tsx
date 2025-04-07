@@ -1,5 +1,11 @@
-import { NavBar, Swiper, Tabs, CapsuleTabs } from "antd-mobile";
+import { NavBar, Swiper, Tabs, CapsuleTabs, FloatingBubble } from "antd-mobile";
+import { MessageFill } from "antd-mobile-icons";
 import { useNavigate } from "react-router";
+
+import team from "../assets/team/teams.jpeg";
+import detail1 from "../assets/detail/detail1.jpg";
+import detail2 from "../assets/detail/detail2.jpg";
+import detail3 from "../assets/detail/detail3.jpg";
 
 export const Detail = () => {
   const navigate = useNavigate();
@@ -52,7 +58,15 @@ export const Detail = () => {
             <div className="px-[12px] pt-[50px] ">
               <img
                 className="rounded-[10px]"
-                src="https://goin.obs.cn-north-4.myhuaweicloud.com/wechat/1743674423563722261153646551.jpg"
+                src={detail1}
+              />
+            </div>
+          </Swiper.Item>
+          {/* <Swiper.Item>
+            <div className="px-[12px] pt-[50px] ">
+              <img
+                className="rounded-[10px]"
+                src={detail2}
               />
             </div>
           </Swiper.Item>
@@ -60,10 +74,10 @@ export const Detail = () => {
             <div className="px-[12px] pt-[50px] ">
               <img
                 className="rounded-[10px]"
-                src="https://goin.obs.cn-north-4.myhuaweicloud.com/wechat/1743674423563722261153646551.jpg"
+                src={detail3}
               />
             </div>
-          </Swiper.Item>
+          </Swiper.Item> */}
         </Swiper>
         <div
           className="flex gap-[3px] absolute rounded-[22px] bottom-[26px] right-[23px]"
@@ -83,7 +97,7 @@ export const Detail = () => {
 
       {/* 活动详情 */}
       <div className="flex flex-col p-[17px] pt-0 gap-[5px] bg-white mb-[10px]">
-        <div className="title-h2">漫谈dex：去中心化衍生品交易所新叙事</div>
+        <div className="title-h2">AI Agent Hackathon</div>
 
         <div className="flex items-center gap-[5px]">
           <div className="flex flex-col gap-[5px] flex-1">
@@ -92,7 +106,7 @@ export const Detail = () => {
                 <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/time_n.png" />
               </div>
               <div className="text-[#6D6C6B] text-[14px] leading-[23px] font-[400]">
-                活动时间: 04.11 14:00-18:00
+                活动时间: 04.07 10:00-04.09 18:00
               </div>
             </div>
             <div className="flex gap-[5px] items-center">
@@ -100,7 +114,7 @@ export const Detail = () => {
                 <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/location_n.png" />
               </div>
               <div className="text-[#6D6C6B] text-[14px] leading-[23px] font-[400]">
-                活动地址: 潜能新天地
+                活动地址: 香港湾仔港湾道23号...
               </div>
             </div>
           </div>
@@ -171,7 +185,9 @@ export const Detail = () => {
           </div>
         </div>
       </div>
-
+      <div>
+        <img src={team} />
+      </div>
       {/* 赛事简介 */}
       <Tabs
         className="customTabs"
@@ -192,7 +208,7 @@ export const Detail = () => {
           }
           key="1"
         >
-          <div className="flex flex-col p-[17px] gap-[10px]  text-[14px]">
+          {/* <div className="flex flex-col p-[17px] gap-[10px]  text-[14px]">
             <div className="text-[#303133">
               🔥
               深度揭秘链上永续合约交易所——如何找到真正安全、低滑点、高流动性的交易平台？避免踩坑！
@@ -216,7 +232,9 @@ export const Detail = () => {
             <div className="text-[#303133">
               无论你是交易员、DeFi玩家还是安全研究员，这场活动都会让你满载而归！
             </div>
-          </div>
+          </div> */}
+          <img src={detail2} />
+          <img src={detail3} />
         </Tabs.Tab>
         <Tabs.Tab
           title={
@@ -398,7 +416,7 @@ export const Detail = () => {
                 <div className="flex flex-col shadow rounded-[5px] p-[10px]">
                   <div className="flex justify-center items-center gap-[10px]">
                     <div className="flex items-center  gap-[15px]">
-                      <div
+                      {/* <div
                         className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
                         style={{
                           background:
@@ -406,7 +424,7 @@ export const Detail = () => {
                         }}
                       >
                         Vote
-                      </div>
+                      </div> */}
                       <div className="flex flex-col items-center">
                         <div className="w-[40px] h-[40px]">
                           <img
@@ -435,7 +453,7 @@ export const Detail = () => {
                         <div className="opacity-[0.5]">铠甲战刀</div>
                       </div>
 
-                      <div
+                      {/* <div
                         className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
                         style={{
                           background:
@@ -443,7 +461,7 @@ export const Detail = () => {
                         }}
                       >
                         Vote
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   <div className="flex flex-col gap-[5px] flex-1 mt-[20px]">
@@ -522,6 +540,17 @@ export const Detail = () => {
           </div>
         </div>
       </div>
+
+      <FloatingBubble
+        style={{
+          "--initial-position-bottom": "110px",
+          "--initial-position-right": "14px",
+          "--edge-distance": "24px",
+          "--background": "rgba(80, 245, 255, 1)",
+        }}
+      >
+        <MessageFill fontSize={32} />
+      </FloatingBubble>
     </div>
   );
 };
