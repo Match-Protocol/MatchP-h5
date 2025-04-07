@@ -90,7 +90,7 @@ export const Detail = () => {
             <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/wanzi.png" />
           </div>
           <div className="text-[#50F5FF] bg-[#454545] px-[6px]  rounded-[10px]">
-            68元/人
+            50元/人
           </div>
         </div>
       </div>
