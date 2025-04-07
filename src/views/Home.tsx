@@ -1,9 +1,12 @@
 import { SearchBar, Swiper, Space, Card, Avatar } from "antd-mobile";
 import { MoreOutline, ScanningOutline, DownFill } from "antd-mobile-icons";
+import { useNavigate } from "react-router";
 
 import banner from "../assets/banner/banner2@2x.png";
 
 export const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <div
       className="flex flex-col bg-gray-100 h-[100%]"
@@ -271,7 +274,10 @@ export const Home = () => {
               </div>
               <div className="flex flex-1 justify-between">
                 <div className="mt-[10px]">4人已报名</div>
-                <div className="mt-[6px] register-btn">
+                <div
+                  onClick={() => navigate("/detail")}
+                  className="mt-[6px] register-btn"
+                >
                   <div>免费</div>
                 </div>
               </div>

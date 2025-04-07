@@ -17,6 +17,7 @@ import { projectId, metadata, networks, wagmiAdapter } from "./config";
 import { Home } from "./views/Home";
 import { Chat } from "./views/Chat";
 import { Me } from "./views/Me";
+import { Detail } from "./views/Detail";
 
 import createIcon from "./assets/tabbar/create_icon.png";
 import indexIcon from "./assets/tabbar/index_icon.png";
@@ -139,6 +140,7 @@ function App() {
             <Route path="/chat" element={<Chat />} />
             <Route path="/me" element={<Me />} />
           </Route>
+          <Route path="/detail" element={<Detail />} />
         </Routes>
       </QueryClientProvider>
     </WagmiProvider>
