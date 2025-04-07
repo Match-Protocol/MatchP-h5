@@ -1,4 +1,4 @@
-import { NavBar, Swiper } from "antd-mobile";
+import { NavBar, Swiper, Tabs, CapsuleTabs } from "antd-mobile";
 import { useNavigate } from "react-router";
 
 export const Detail = () => {
@@ -9,7 +9,13 @@ export const Detail = () => {
   };
 
   return (
-    <div className="h-[100vh] relative">
+    <div
+      className="h-[100vh] relative"
+      style={{
+        background:
+          "linear-gradient(rgba(112, 191, 255, 0.27) 0%, rgba(226, 156, 228, 0) 80%)",
+      }}
+    >
       <NavBar
         className="w-full !h-[44px] fixed z-[10] bg-white"
         style={{ "--height": "23px", "--border-bottom": "5px" }}
@@ -38,8 +44,9 @@ export const Detail = () => {
           </div>
         </div>
       </NavBar>
+
       {/* 轮播图 */}
-      <div className="relative">
+      <div className="relative bg-white pb-[10px]">
         <Swiper loop className="mb-[11px]">
           <Swiper.Item>
             <div className="px-[12px] pt-[50px] ">
@@ -50,7 +57,7 @@ export const Detail = () => {
             </div>
           </Swiper.Item>
           <Swiper.Item>
-            <div className="px-[12px] pt-[12px] ">
+            <div className="px-[12px] pt-[50px] ">
               <img
                 className="rounded-[10px]"
                 src="https://goin.obs.cn-north-4.myhuaweicloud.com/wechat/1743674423563722261153646551.jpg"
@@ -59,7 +66,7 @@ export const Detail = () => {
           </Swiper.Item>
         </Swiper>
         <div
-          className="flex gap-[3px] absolute rounded-[22px] bottom-[6px] right-[23px]"
+          className="flex gap-[3px] absolute rounded-[22px] bottom-[26px] right-[23px]"
           style={{
             background:
               "linear-gradient(87deg, #111E37 0%, rgba(35, 52, 87, 0.3) 63%, rgba(247, 247, 247, 0) 100%)",
@@ -74,7 +81,8 @@ export const Detail = () => {
         </div>
       </div>
 
-      <div className="flex flex-col p-[17px] pt-0 gap-[5px]">
+      {/* 活动详情 */}
+      <div className="flex flex-col p-[17px] pt-0 gap-[5px] bg-white mb-[10px]">
         <div className="title-h2">漫谈dex：去中心化衍生品交易所新叙事</div>
 
         <div className="flex items-center gap-[5px]">
@@ -84,7 +92,7 @@ export const Detail = () => {
                 <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/time_n.png" />
               </div>
               <div className="text-[#6D6C6B] text-[14px] leading-[23px] font-[400]">
-                活动时间:04.11 14:00-18:00
+                活动时间: 04.11 14:00-18:00
               </div>
             </div>
             <div className="flex gap-[5px] items-center">
@@ -92,7 +100,7 @@ export const Detail = () => {
                 <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/location_n.png" />
               </div>
               <div className="text-[#6D6C6B] text-[14px] leading-[23px] font-[400]">
-                活动地址:潜能新天地
+                活动地址: 潜能新天地
               </div>
             </div>
           </div>
@@ -113,7 +121,8 @@ export const Detail = () => {
         </div>
       </div>
 
-      <div className="flex justify-between items-center p-[17px] gap-[5px]">
+      {/* 发布人 */}
+      <div className="flex justify-between items-center p-[17px] gap-[5px] bg-white">
         <div className="flex flex-1 gap-[10px]">
           <div className="relative">
             <div
@@ -163,32 +172,329 @@ export const Detail = () => {
         </div>
       </div>
 
-      <div className="flex flex-col p-[17px] gap-[10px]  text-[14px]">
-        <div className="text-[#3D3D3D] leading-[20px] font-[600]">活动描述</div>
-        <div className="text-[#303133">
-          🔥
-          深度揭秘链上永续合约交易所——如何找到真正安全、低滑点、高流动性的交易平台？避免踩坑！
-        </div>
-        <div className="text-[#303133">
-          💥
-          Hyperliquid金库狙击事件全解析——巨鲸如何得手？项目方应对是否到位？我们将复盘攻击细节，探讨如何提升资金安全策略。
-        </div>
-        <div className="text-[#303133">
-          🎤 大咖圆桌激辩——安全专家、量化团队现场交锋：CEX vs
-          DEX永续合约，谁更胜一筹？
-        </div>
-        <div className="text-[#303133">
-          🤖
-          实盘数据演示——用链上工具实时分析交易所流动性、资金费率，教你用数据选择最佳交易场所！
-        </div>
-        <div className="text-[#303133">
-          💡
-          自由交流+资源对接——结识交易高手、开发者和机构伙伴，拓展你的defi人脉圈！
-        </div>
-        <div className="text-[#303133">
-          无论你是交易员、DeFi玩家还是安全研究员，这场活动都会让你满载而归！
-        </div>
-      </div>
+      {/* 赛事简介 */}
+      <Tabs
+        className="customTabs"
+        activeLineMode="fixed"
+        style={
+          {
+            marginTop: 12,
+            "--adm-color-primary": "rgb(29,204,225)",
+            "--active-line-height": "4px",
+          } as React.CSSProperties
+        }
+      >
+        <Tabs.Tab
+          title={
+            <div className="text-[#3D3D3D] leading-[20px] font-[600]">
+              赛事简介
+            </div>
+          }
+          key="1"
+        >
+          <div className="flex flex-col p-[17px] gap-[10px]  text-[14px]">
+            <div className="text-[#303133">
+              🔥
+              深度揭秘链上永续合约交易所——如何找到真正安全、低滑点、高流动性的交易平台？避免踩坑！
+            </div>
+            <div className="text-[#303133">
+              💥
+              Hyperliquid金库狙击事件全解析——巨鲸如何得手？项目方应对是否到位？我们将复盘攻击细节，探讨如何提升资金安全策略。
+            </div>
+            <div className="text-[#303133">
+              🎤 大咖圆桌激辩——安全专家、量化团队现场交锋：CEX vs
+              DEX永续合约，谁更胜一筹？
+            </div>
+            <div className="text-[#303133">
+              🤖
+              实盘数据演示——用链上工具实时分析交易所流动性、资金费率，教你用数据选择最佳交易场所！
+            </div>
+            <div className="text-[#303133">
+              💡
+              自由交流+资源对接——结识交易高手、开发者和机构伙伴，拓展你的defi人脉圈！
+            </div>
+            <div className="text-[#303133">
+              无论你是交易员、DeFi玩家还是安全研究员，这场活动都会让你满载而归！
+            </div>
+          </div>
+        </Tabs.Tab>
+        <Tabs.Tab
+          title={
+            <div className="text-[#3D3D3D] leading-[20px] font-[600]">
+              Match P
+            </div>
+          }
+          key="2"
+        >
+          <CapsuleTabs>
+            <CapsuleTabs.Tab title="赛程" key="fruits"></CapsuleTabs.Tab>
+            <CapsuleTabs.Tab
+              title="赛事评分"
+              key="vegetables"
+            ></CapsuleTabs.Tab>
+            <CapsuleTabs.Tab title="赛事投资" key="animals"></CapsuleTabs.Tab>
+          </CapsuleTabs>
+
+          <Tabs
+            className="customInnerTabs bg-white"
+            activeLineMode="fixed"
+            style={
+              {
+                marginTop: 12,
+                "--adm-color-primary": "rgb(29,204,225)",
+                "--active-line-height": "4px",
+              } as React.CSSProperties
+            }
+          >
+            <Tabs.Tab
+              title={
+                <div className="text-[#3D3D3D] leading-[20px] font-[600]">
+                  A组小组赛
+                </div>
+              }
+              key="1"
+            >
+              <div className="flex flex-col gap-[10px]">
+                <div className="flex flex-col shadow rounded-[5px] p-[10px]">
+                  <div className="flex justify-center gap-[10px] items-center">
+                    <div className="flex items-center  gap-[15px]">
+                      <div className="flex flex-col items-center">
+                        <div className="w-[40px] h-[40px]">
+                          <img
+                            className="rounded-full"
+                            src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head03.jpg"
+                          />
+                        </div>
+                        <div className="opacity-[0.5]">筑梦少年</div>
+                      </div>
+                      {/* <div
+                        className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
+                        style={{
+                          background:
+                            "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
+                        }}
+                      >
+                        Vote
+                      </div> */}
+                    </div>
+
+                    <div className="flex flex-col items-center">
+                      <div className="w-[40px] p-[3px] text-center rounded-[5px] bg-[#50F5FF]">
+                        3 : 5
+                      </div>
+                      <div className="font-bold">赛后</div>
+                    </div>
+                    <div className="flex items-center  gap-[15px]">
+                      <div className="flex flex-col items-center ">
+                        <div className="w-[40px] h-[40px]">
+                          <img
+                            className="rounded-full"
+                            src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head02.jpg"
+                          />
+                        </div>
+                        <div className="opacity-[0.5]">铠甲战刀</div>
+                      </div>
+
+                      {/* <div
+                        className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
+                        style={{
+                          background:
+                            "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
+                        }}
+                      >
+                        Vote
+                      </div> */}
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-[5px] flex-1 mt-[20px]">
+                    <div className="flex gap-[5px] items-center">
+                      <div className="w-[17px] h-[17px] ">
+                        <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/time_n.png" />
+                      </div>
+                      <div className="text-[#6D6C6B] text-[12px] leading-[20px] font-[400]">
+                        比赛时间: 2024.06.01 20:30-22:30
+                      </div>
+                    </div>
+                    <div className="flex gap-[5px] items-center">
+                      <div className="w-[17px] h-[17px] ">
+                        <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/location_n.png" />
+                      </div>
+                      <div className="text-[#6D6C6B] text-[12px] leading-[20px] font-[400]">
+                        地址: 四川省成都市武侯区天府大道中段1388号
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col shadow rounded-[5px] p-[10px]">
+                  <div className="flex justify-center items-center gap-[10px]">
+                    <div className="flex items-center  gap-[15px]">
+                      <div
+                        className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
+                        style={{
+                          background:
+                            "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
+                        }}
+                      >
+                        Vote
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <div className="w-[40px] h-[40px]">
+                          <img
+                            className="rounded-full"
+                            src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head03.jpg"
+                          />
+                        </div>
+                        <div className="opacity-[0.5]">筑梦少年</div>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col items-center">
+                      <div className="w-[40px] p-[3px] text-center rounded-[5px] bg-[#50F5FF]">
+                        竞猜
+                      </div>
+                      <div className="font-bold">赛前</div>
+                    </div>
+                    <div className="flex items-center  gap-[15px]">
+                      <div className="flex flex-col items-center ">
+                        <div className="w-[40px] h-[40px]">
+                          <img
+                            className="rounded-full"
+                            src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head02.jpg"
+                          />
+                        </div>
+                        <div className="opacity-[0.5]">铠甲战刀</div>
+                      </div>
+
+                      <div
+                        className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
+                        style={{
+                          background:
+                            "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
+                        }}
+                      >
+                        Vote
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-[5px] flex-1 mt-[20px]">
+                    <div className="flex gap-[5px] items-center">
+                      <div className="w-[17px] h-[17px] ">
+                        <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/time_n.png" />
+                      </div>
+                      <div className="text-[#6D6C6B] text-[12px] leading-[20px] font-[400]">
+                        比赛时间: 2024.06.01 20:30-22:30
+                      </div>
+                    </div>
+                    <div className="flex gap-[5px] items-center">
+                      <div className="w-[17px] h-[17px] ">
+                        <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/location_n.png" />
+                      </div>
+                      <div className="text-[#6D6C6B] text-[12px] leading-[20px] font-[400]">
+                        地址: 四川省成都市武侯区天府大道中段1388号
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col shadow rounded-[5px] p-[10px]">
+                  <div className="flex justify-center items-center gap-[10px]">
+                    <div className="flex items-center  gap-[15px]">
+                      <div
+                        className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
+                        style={{
+                          background:
+                            "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
+                        }}
+                      >
+                        Vote
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <div className="w-[40px] h-[40px]">
+                          <img
+                            className="rounded-full"
+                            src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head03.jpg"
+                          />
+                        </div>
+                        <div className="opacity-[0.5]">筑梦少年</div>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col items-center">
+                      <div className="w-[40px] p-[3px] text-center rounded-[5px] bg-[#50F5FF]">
+                        竞猜
+                      </div>
+                      <div className="font-bold">赛中</div>
+                    </div>
+                    <div className="flex items-center  gap-[15px]">
+                      <div className="flex flex-col items-center ">
+                        <div className="w-[40px] h-[40px]">
+                          <img
+                            className="rounded-full"
+                            src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head02.jpg"
+                          />
+                        </div>
+                        <div className="opacity-[0.5]">铠甲战刀</div>
+                      </div>
+
+                      <div
+                        className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
+                        style={{
+                          background:
+                            "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
+                        }}
+                      >
+                        Vote
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-[5px] flex-1 mt-[20px]">
+                    <div className="flex gap-[5px] items-center">
+                      <div className="w-[17px] h-[17px] ">
+                        <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/time_n.png" />
+                      </div>
+                      <div className="text-[#6D6C6B] text-[12px] leading-[20px] font-[400]">
+                        比赛时间: 2024.06.01 20:30-22:30
+                      </div>
+                    </div>
+                    <div className="flex gap-[5px] items-center">
+                      <div className="w-[17px] h-[17px] ">
+                        <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/location_n.png" />
+                      </div>
+                      <div className="text-[#6D6C6B] text-[12px] leading-[20px] font-[400]">
+                        地址: 四川省成都市武侯区天府大道中段1388号
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Tabs.Tab>
+            <Tabs.Tab
+              title={
+                <div className="text-[#3D3D3D] leading-[20px] font-[600]">
+                  B组小组赛
+                </div>
+              }
+              key="2"
+            ></Tabs.Tab>
+            <Tabs.Tab
+              title={
+                <div className="text-[#3D3D3D] leading-[20px] font-[600]">
+                  半决赛
+                </div>
+              }
+              key="3"
+            ></Tabs.Tab>
+            <Tabs.Tab
+              title={
+                <div className="text-[#3D3D3D] leading-[20px] font-[600]">
+                  决赛
+                </div>
+              }
+              key="4"
+            ></Tabs.Tab>
+          </Tabs>
+        </Tabs.Tab>
+      </Tabs>
+
       <div className="h-[96px]"></div>
       <div className="bottom-menu">
         <div className="flex gap-[5px] w-[69px] justify-between ">
@@ -205,15 +511,14 @@ export const Detail = () => {
             <div>收藏</div>
           </div>
         </div>
-        <div className="flex justify-end items-center">
+        <div className="w-2/3">
           <div
-            className="text-[17px] text-[#454545] font-[400] w-[260px] h-[42px] leading-[42px] text-center rounded-[23px]"
+            className="text-[17px] text-[#454545] font-[700] h-[42px] leading-[42px] text-center rounded-[23px]"
             style={{
-              background:
-                "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
+              background: "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
             }}
           >
-            报名<span className="text-[14px] font-[700]">(¥120/人)</span>
+            报名 (¥120/人)
           </div>
         </div>
       </div>

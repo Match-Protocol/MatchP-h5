@@ -54,7 +54,7 @@ export const Me = () => {
             </div>
             <div className="text-gray-500 text-sm mt-1">did: 287864115</div>
             {address && (
-              <div className="text-gray-500 text-sm mt-1">{`${address.slice(0, 6)}...${address.slice(-4)}`}</div>
+              <div className="text-gray-500 text-sm mt-1">{`${address.slice(0, 4)}...${address.slice(-4)}`}</div>
             )}
             {/* 标签列表 */}
             <div className="flex flex-wrap gap-2 mt-2">
