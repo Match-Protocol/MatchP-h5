@@ -14,7 +14,7 @@ export const metadata = {
     name: 'match-protocol-h5',
     description: 'Match P, 全称为Match Protocol, 一个赛事和黑客松相关的比赛开源协议。',
     url: 'https://match-protocol.vercel.app', // origin must match your domain & subdomain
-    icons: ['https://fedavinci.vercel.app/logo.jpeg']
+    icons: ['https://match-protocol.vercel.app/logo.jpeg']
   }
 
 // for custom networks visit -> https://docs.reown.com/appkit/react/core/custom-networks
