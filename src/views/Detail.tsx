@@ -883,8 +883,7 @@ const Chat = () => {
     request: async ({ message }, { onSuccess, onError }) => {
       try {
         await new Promise((resolve) => setTimeout(resolve, 2000));
-        // onSuccess(`Received ${message}`);
-        onSuccess("好的");
+        onSuccess(`Received ${message}`);
       } catch (error) {
         console.error("Failed to generate a response:", error);
         onError(new Error());
