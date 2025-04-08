@@ -16,6 +16,7 @@ import detail1 from "../assets/detail/detail1.jpg";
 import detail2 from "../assets/detail/detail2.jpg";
 import detail3 from "../assets/detail/detail3.jpg";
 import tintinland from "../assets/icon/tintinland.png";
+import adam from "../assets/icon/adam.jpeg";
 
 import { useState } from "react";
 
@@ -157,19 +158,18 @@ export const Detail = () => {
                 border: "3px solid rgb(26, 205, 232)",
               }}
             >
-              <img
-                className="rounded-full"
-                src="https://goin.obs.cn-north-4.myhuaweicloud.com/wechat/1743395768327881612810102006.jpg"
-              />
+              <img className="rounded-full" src={adam} />
             </div>
             <div className="w-[17px] h-[17px] absolute right-0 bottom-0">
-              <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/boy.png"></img>
+              <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/girl.png"></img>
             </div>
           </div>
 
           <div className="flex flex-col  gap-[5px]">
             <div className="flex items-center gap-[5px]">
-              <div className="text-[14px] font-[600] opacity-[0.8]">leo</div>
+              <div className="text-[14px] font-[600] opacity-[0.8]">
+                Adam@TinTin
+              </div>
               <div
                 className="text-[10px] text-[#1ACDE8] text-center rounded-[4px] w-[42px] h-[17px] leading-[17px]"
                 style={{
@@ -179,9 +179,7 @@ export const Detail = () => {
                 发布人
               </div>
             </div>
-            <div className="text-[11px]  opacity-[0.5]">
-              有喜欢交易的朋友欢迎沟通。
-            </div>
+            <div className="text-[11px]  opacity-[0.5]">开开心心一起来玩吧</div>
           </div>
         </div>
 
