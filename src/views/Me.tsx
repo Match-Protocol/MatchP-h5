@@ -1,23 +1,95 @@
 import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
+import { useState, useEffect } from "react";
 
-import { Avatar, Tag } from "antd-mobile";
+import { Avatar, Tag, Toast } from "antd-mobile";
 import { SetOutline, ScanningOutline } from "antd-mobile-icons";
+import { useWriteContract, useReadContract,useWaitForTransactionReceipt } from "wagmi";
 
 import walletIcon from "../assets/wallet.png";
 
+import { matchPABI } from "../abis/matchP";
+import { matchTokenABI } from "../abis/matchToken";
+import { matchTokenAddress, matchPAddress } from "../constants";
+
 export const Me = () => {
-  // const { disconnect } = useDisconnect();
   const { address } = useAppKitAccount();
   const { open } = useAppKit();
+  const [hasReceived, setHasReceived] = useState(false);
+  const [txHash, setTxHash] = useState<`0x${string}` | undefined>();
 
-  // const handleDisconnect = async () => {
-  //   try {
-  //     await disconnect();
-  //   } catch (error) {
-  //     console.error("Failed to disconnect:", error);
-  //   }
-  // };
+  const { data: balance, refetch: refetchBalance } = useReadContract({
+    address: matchTokenAddress,
+    abi: matchTokenABI,
+    functionName: "balanceOf",
+    args: address ? [address as `0x${string}`] : undefined,
+    query: {
+      enabled: !!address,
+    },
+  });
 
+  // 检查用户是否已经领取过token
+  // const { data: isGainData } = useReadContract({
+  //   address: matchPAddress,
+  //   abi: matchPABI,
+  //   functionName: "isGain",
+  //   args: address ? [address as `0x${string}`] : undefined,
+  //   query: {
+  //     enabled: !!address,
+  //   },
+  // });
+  // 监听交易状态
+  const { isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+    hash: txHash,
+    query: {
+      enabled: !!txHash,
+    },
+  });
+  const { writeContractAsync } = useWriteContract();
+
+  useEffect(() => {
+    if (address) {
+      refetchBalance();
+    } 
+    // 如果已经领取过，设置状态
+    // if (isGainData) {
+    //   setHasReceived(true);
+    // }
+  }, [address, refetchBalance]);
+
+  const receiveToken = async () => {
+    // 如果已经领取过，提示用户
+    // if (hasReceived) {
+    //   Toast.show({ content: "您已经领取过Token了！" });
+    //   return;
+    // }
+    try {
+      Toast.show({ icon: "loading", duration: 0 });
+      const hash =  await writeContractAsync({
+        address: matchPAddress,
+        abi: matchPABI,
+        functionName: "getToken",
+        args: [],
+      });
+      setTxHash(hash);
+    } catch (error) {
+      Toast.show({ content: "领取失败！" });
+      console.error("授权失败:", error);
+    } finally {
+      Toast.clear();
+      Toast.show({ content: "交易已提交，等待确认..." });
+    }
+  };
+
+    // 监听交易确认状态
+    useEffect(() => {
+      if (isConfirmed) {
+        Toast.show({ content: "领取成功！" });
+        setHasReceived(true);
+        refetchBalance();
+        // 清除交易哈希，避免重复处理
+        setTxHash(undefined);
+      }
+    }, [isConfirmed, refetchBalance]);
   return (
     <div className="flex flex-col  bg-[#f5f5f5]">
       {/* 顶部背景和个人信息 */}
@@ -54,7 +126,10 @@ export const Me = () => {
             </div>
             <div className="text-gray-500 text-sm mt-1">did: 287864115</div>
             {address && (
-              <div className="text-gray-500 text-sm mt-1">{`${address.slice(0, 4)}...${address.slice(-4)}`}</div>
+              <div className="text-gray-500 text-sm mt-1">{`${address.slice(
+                0,
+                4
+              )}...${address.slice(-4)}`}</div>
             )}
             {/* 标签列表 */}
             <div className="flex flex-wrap gap-2 mt-2">
@@ -118,7 +193,7 @@ export const Me = () => {
                 src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/my_wz.png"
               ></img>
               <span className="text-gray-300">MATCH</span>
-              <span className="text-white font-bold">1000</span>
+              <span className="text-white font-bold">{Number(balance) || 0}</span>
             </div>
             <div className="flex-1 py-3 px-4 flex items-center gap-[7px]">
               <img
@@ -156,16 +231,18 @@ export const Me = () => {
           <span className="text-sm">我的发布</span>
         </div>
 
-        <div className="flex flex-col items-center">
-          <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-1">
-            <img
-              className="w-[25px] h-[25px]"
-              src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/my/function/asset.png"
-              draggable="false"
-            ></img>
+        {address && (
+          <div className="flex flex-col items-center" onClick={receiveToken}>
+            <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-1">
+              <img
+                className="w-[25px] h-[25px]"
+                src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/my/function/asset.png"
+                draggable="false"
+              ></img>
+            </div>
+            <span className="text-sm">{hasReceived ? "已领取" : "领取Token"}</span>
           </div>
-          <span className="text-sm">数字资产</span>
-        </div>
+        )}
 
         <div onClick={() => open()} className="flex flex-col items-center">
           <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-1">

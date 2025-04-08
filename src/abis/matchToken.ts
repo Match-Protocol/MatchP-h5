@@ -1,4 +1,4 @@
-export const abi = [
+export const matchTokenABI = [
 	{
 		"inputs": [
 			{
@@ -260,6 +260,37 @@ export const abi = [
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "burn",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "burnFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "decimals",
 		"outputs": [
@@ -415,4 +446,4 @@ export const abi = [
 		"stateMutability": "nonpayable",
 		"type": "function"
 	}
-] as const;
+] as const

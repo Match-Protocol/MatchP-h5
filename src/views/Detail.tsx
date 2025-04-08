@@ -7,10 +7,16 @@ import {
   Popup,
   Avatar,
   Badge,
+  Toast,
 } from "antd-mobile";
 import { MessageFill } from "antd-mobile-icons";
 import { useNavigate } from "react-router";
 import { Bubble, Sender, useXChat, useXAgent } from "@ant-design/x";
+import {
+  useWriteContract,
+  useReadContract,
+  useWaitForTransactionReceipt,
+} from "wagmi";
 
 import team from "../assets/team/teams.jpeg";
 import detail1 from "../assets/detail/detail1.jpg";
@@ -19,7 +25,14 @@ import detail3 from "../assets/detail/detail3.jpg";
 import tintinland from "../assets/icon/tintinland.png";
 import adam from "../assets/icon/adam.jpeg";
 
-import { useState } from "react";
+import { matchPABI } from "../abis/matchP";
+import { matchTokenABI } from "../abis/matchToken";
+import { matchTokenAddress, matchPAddress } from "../constants";
+
+import { useEffect, useState } from "react";
+
+const playerAddress1 = "0xA52aD924E5A65149c211E4b90410f4ee84a8E167";
+const playerAddress2 = "0x1CF7452c1455f95D3d7Ba5f4Fa359c0b6bD24520";
 
 export const Detail = () => {
   const navigate = useNavigate();
@@ -30,6 +43,175 @@ export const Detail = () => {
 
   const [visible, setVisible] = useState(false);
   const [showBadgeCount, setShowBadgeCount] = useState(true);
+
+  const [voteLoading, setVoteLoading] = useState(false);
+  const [approveHash, setApproveHash] = useState<`0x${string}` | undefined>();
+  const { writeContractAsync } = useWriteContract();
+  const { isSuccess: isApproveConfirmed } = useWaitForTransactionReceipt({
+    hash: approveHash,
+    query: {
+      enabled: !!approveHash,
+    },
+  });
+  const handleVote = async (leftVote: boolean) => {
+    const playerAddress = leftVote ? playerAddress1 : playerAddress2;
+    const value = leftVote ? 30 : 50;
+
+    // todo
+    // matchToken.approve(address, value)
+    // matchP.stake(address, value)
+    try {
+      setVoteLoading(true);
+      Toast.show({ icon: "loading", content: "授权中...", duration: 0 });
+      // 保存投票信息到本地存储，以便在授权确认后使用
+      localStorage.setItem(
+        "voteInfo",
+        JSON.stringify({ playerAddress, value })
+      );
+      const hash = await writeContractAsync({
+        address: matchTokenAddress,
+        abi: matchTokenABI,
+        functionName: "approve",
+        args: [matchPAddress, BigInt(value)],
+      });
+
+      setApproveHash(hash);
+      Toast.clear();
+      Toast.show({ content: "授权已提交，等待确认..." });
+    } catch (error) {
+      Toast.clear();
+      Toast.show({ content: "授权失败！" });
+      console.error("授权失败:", error);
+      setVoteLoading(false);
+    }
+  };
+
+  // 当授权确认后，执行stake操作
+  useEffect(() => {
+    const executeStake = async () => {
+      if (isApproveConfirmed && approveHash) {
+        try {
+          Toast.show({ content: "授权成功，正在投票...", duration: 0 });
+
+          // 从本地存储获取投票信息
+          const voteInfo = JSON.parse(localStorage.getItem("voteInfo") || "{}");
+          const { playerAddress, value } = voteInfo;
+
+          localStorage.setItem("txType", "vote");
+
+          // 调用stake方法
+          const hash = await writeContractAsync({
+            address: matchPAddress,
+            abi: matchPABI,
+            functionName: "stake",
+            args: [BigInt(1), playerAddress, BigInt(value)],
+          });
+
+          setTxHash(hash);
+          // 清除授权哈希和本地存储
+          setApproveHash(undefined);
+          localStorage.removeItem("voteInfo");
+        } catch (error) {
+          Toast.clear();
+          Toast.show({ content: "投票失败！" });
+          console.error("投票失败:", error);
+          setVoteLoading(false);
+          setApproveHash(undefined);
+        }
+      }
+    };
+
+    executeStake();
+  }, [isApproveConfirmed, approveHash, writeContractAsync]);
+
+  // 获取评分数据
+  const {
+    data: scores,
+    refetch: refetchScores,
+    isLoading: isLoadingScores,
+  } = useReadContract({
+    address: matchPAddress,
+    abi: matchPABI,
+    functionName: "getAllScore",
+    args: [BigInt(1)],
+    query: {
+      enabled: !!1,
+    },
+  });
+  console.log(scores);
+  const formatScore = (score: number) => {
+    if (!score) return 0;
+    return (score / 10).toFixed(1);
+  };
+  const calculateAverage = (scores: number[] | undefined) => {
+    if (!scores || scores.length === 0) return 0;
+    const sum = scores.reduce((acc, score) => acc + score, 0);
+    return formatScore(sum / scores.length);
+  };
+  // matchP.getAllScore() => [10-100]
+  // 显示的 score => [1.0-10.0]
+
+  // 评分状态
+  const ratingScores = Array(4)
+    .fill(0)
+    .map(() => Math.floor(Math.random() * 5) + 1);
+
+  // 处理评分变化
+  //   const handleScoreChange = (index: number, value: number) => {
+  //     const newScores = [...ratingScores];
+  //     newScores[index] = value;
+  //     setRatingScores(newScores);
+  //   };
+
+  const [txHash, setTxHash] = useState<`0x${string}` | undefined>();
+
+  const handleRate = async () => {
+    // todo
+    // matchP.rate(1, [1-5,1-5,1-5,1-5])
+    try {
+      Toast.show({ icon: "loading", duration: 0 });
+
+      localStorage.setItem("txType", "rate");
+
+      const hash = await writeContractAsync({
+        address: matchPAddress,
+        abi: matchPABI,
+        functionName: "rate",
+        args: [BigInt(1), ratingScores],
+      });
+      setTxHash(hash);
+    } catch (error) {
+      Toast.show({ content: "Rate失败！" });
+      console.error("Rate失败:", error);
+    } finally {
+      Toast.clear();
+      Toast.show({ content: "交易已提交，等待确认..." });
+    }
+  };
+
+  const { isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+    hash: txHash,
+    query: {
+      enabled: !!txHash,
+    },
+  });
+
+  // 监听交易确认状态
+  useEffect(() => {
+    if (isConfirmed && txHash) {
+      if (localStorage.getItem("txType") === "rate") {
+        Toast.show({ content: "Rate成功！" });
+      } else {
+        Toast.show({ content: "投票成功！" });
+        setVoteLoading(false);
+      }
+      refetchScores();
+      // 清除交易哈希，避免重复处理
+      setTxHash(undefined);
+    }
+  }, [isConfirmed, refetchScores, txHash]);
+
+  // 获取投票数据
 
   return (
     <div
@@ -257,271 +439,378 @@ export const Detail = () => {
           key="2"
         >
           <CapsuleTabs>
-            <CapsuleTabs.Tab title="赛程" key="fruits"></CapsuleTabs.Tab>
-            <CapsuleTabs.Tab
-              title="赛事评分"
-              key="vegetables"
-            ></CapsuleTabs.Tab>
+            <CapsuleTabs.Tab title="赛程" key="fruits">
+              <Tabs
+                className="customInnerTabs bg-white"
+                activeLineMode="fixed"
+                style={
+                  {
+                    "--adm-color-primary": "rgb(29,204,225)",
+                    "--active-line-height": "4px",
+                  } as React.CSSProperties
+                }
+              >
+                <Tabs.Tab
+                  title={
+                    <div className="text-[#3D3D3D] leading-[20px] font-[600]">
+                      A组小组赛
+                    </div>
+                  }
+                  key="1"
+                >
+                  <div className="flex flex-col gap-[10px]">
+                    <div className="flex flex-col shadow rounded-[5px] p-[10px]">
+                      <div className="flex justify-center gap-[10px] items-center">
+                        <div className="flex items-center  gap-[15px]">
+                          <div className="flex flex-col items-center">
+                            <div className="w-[40px] h-[40px]">
+                              <img
+                                className="rounded-full"
+                                src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head03.jpg"
+                              />
+                            </div>
+                            <div className="opacity-[0.5]">筑梦少年</div>
+                          </div>
+                          {/* <div
+                        className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
+                        style={{
+                          background:
+                            "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
+                        }}
+                      >
+                        Vote
+                      </div> */}
+                        </div>
+
+                        <div className="flex flex-col items-center">
+                          <div className="w-[40px] p-[3px] text-center rounded-[5px] bg-[#50F5FF]">
+                            3 : 5
+                          </div>
+                          <div className="font-bold">赛后</div>
+                        </div>
+                        <div className="flex items-center  gap-[15px]">
+                          <div className="flex flex-col items-center ">
+                            <div className="w-[40px] h-[40px]">
+                              <img
+                                className="rounded-full"
+                                src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head02.jpg"
+                              />
+                            </div>
+                            <div className="opacity-[0.5]">铠甲战刀</div>
+                          </div>
+
+                          {/* <div
+                        className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
+                        style={{
+                          background:
+                            "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
+                        }}
+                      >
+                        Vote
+                      </div> */}
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-[5px] flex-1 mt-[20px]">
+                        <div className="flex gap-[5px] items-center">
+                          <div className="w-[17px] h-[17px] ">
+                            <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/time_n.png" />
+                          </div>
+                          <div className="text-[#6D6C6B] text-[12px] leading-[20px] font-[400]">
+                            比赛时间: 2024.06.01 20:30-22:30
+                          </div>
+                        </div>
+                        <div className="flex gap-[5px] items-center">
+                          <div className="w-[17px] h-[17px] ">
+                            <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/location_n.png" />
+                          </div>
+                          <div className="text-[#6D6C6B] text-[12px] leading-[20px] font-[400]">
+                            地址: 四川省成都市武侯区天府大道中段1388号
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex flex-col shadow rounded-[5px] p-[10px]">
+                      <div className="flex justify-center items-center gap-[10px]">
+                        <div className="flex items-center  gap-[15px]">
+                          <div
+                            className={`w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px] ${
+                              voteLoading ? "opacity-50" : ""
+                            }`}
+                            style={{
+                              background:
+                                "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
+                            }}
+                            onClick={() => !voteLoading && handleVote(true)}
+                          >
+                            {voteLoading ? "处理中" : "Vote"}
+                          </div>
+                          <div className="flex flex-col items-center">
+                            <div className="w-[40px] h-[40px]">
+                              <img
+                                className="rounded-full"
+                                src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head03.jpg"
+                              />
+                            </div>
+                            <div className="opacity-[0.5]">筑梦少年</div>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col items-center">
+                          <div className="w-[40px] p-[3px] text-center rounded-[5px] bg-[#50F5FF]">
+                            竞猜
+                          </div>
+                          <div className="font-bold">赛前</div>
+                        </div>
+                        <div className="flex items-center  gap-[15px]">
+                          <div className="flex flex-col items-center ">
+                            <div className="w-[40px] h-[40px]">
+                              <img
+                                className="rounded-full"
+                                src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head02.jpg"
+                              />
+                            </div>
+                            <div className="opacity-[0.5]">铠甲战刀</div>
+                          </div>
+
+                          <div
+                            className={`w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px] ${
+                              voteLoading ? "opacity-50" : ""
+                            }`}
+                            style={{
+                              background:
+                                "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
+                            }}
+                            onClick={() => !voteLoading && handleVote(false)}
+                          >
+                            {voteLoading ? "处理中" : "Vote"}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-[5px] flex-1 mt-[20px]">
+                        <div className="flex gap-[5px] items-center">
+                          <div className="w-[17px] h-[17px] ">
+                            <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/time_n.png" />
+                          </div>
+                          <div className="text-[#6D6C6B] text-[12px] leading-[20px] font-[400]">
+                            比赛时间: 2024.06.01 20:30-22:30
+                          </div>
+                        </div>
+                        <div className="flex gap-[5px] items-center">
+                          <div className="w-[17px] h-[17px] ">
+                            <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/location_n.png" />
+                          </div>
+                          <div className="text-[#6D6C6B] text-[12px] leading-[20px] font-[400]">
+                            地址: 四川省成都市武侯区天府大道中段1388号
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex flex-col shadow rounded-[5px] p-[10px]">
+                      <div className="flex justify-center items-center gap-[10px]">
+                        <div className="flex items-center  gap-[15px]">
+                          {/* <div
+                        className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
+                        style={{
+                          background:
+                            "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
+                        }}
+                      >
+                        Vote
+                      </div> */}
+                          <div className="flex flex-col items-center">
+                            <div className="w-[40px] h-[40px]">
+                              <img
+                                className="rounded-full"
+                                src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head03.jpg"
+                              />
+                            </div>
+                            <div className="opacity-[0.5]">筑梦少年</div>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col items-center">
+                          <div className="w-[40px] p-[3px] text-center rounded-[5px] bg-[#50F5FF]">
+                            1 : 0
+                          </div>
+                          <div className="font-bold">赛中</div>
+                        </div>
+                        <div className="flex items-center  gap-[15px]">
+                          <div className="flex flex-col items-center ">
+                            <div className="w-[40px] h-[40px]">
+                              <img
+                                className="rounded-full"
+                                src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head02.jpg"
+                              />
+                            </div>
+                            <div className="opacity-[0.5]">铠甲战刀</div>
+                          </div>
+
+                          {/* <div
+                        className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
+                        style={{
+                          background:
+                            "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
+                        }}
+                      >
+                        Vote
+                      </div> */}
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-[5px] flex-1 mt-[20px]">
+                        <div className="flex gap-[5px] items-center">
+                          <div className="w-[17px] h-[17px] ">
+                            <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/time_n.png" />
+                          </div>
+                          <div className="text-[#6D6C6B] text-[12px] leading-[20px] font-[400]">
+                            比赛时间: 2024.06.01 20:30-22:30
+                          </div>
+                        </div>
+                        <div className="flex gap-[5px] items-center">
+                          <div className="w-[17px] h-[17px] ">
+                            <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/location_n.png" />
+                          </div>
+                          <div className="text-[#6D6C6B] text-[12px] leading-[20px] font-[400]">
+                            地址: 四川省成都市武侯区天府大道中段1388号
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Tabs.Tab>
+                <Tabs.Tab
+                  title={
+                    <div className="text-[#3D3D3D] leading-[20px] font-[600]">
+                      B组小组赛
+                    </div>
+                  }
+                  key="2"
+                ></Tabs.Tab>
+                <Tabs.Tab
+                  title={
+                    <div className="text-[#3D3D3D] leading-[20px] font-[600]">
+                      半决赛
+                    </div>
+                  }
+                  key="3"
+                ></Tabs.Tab>
+                <Tabs.Tab
+                  title={
+                    <div className="text-[#3D3D3D] leading-[20px] font-[600]">
+                      决赛
+                    </div>
+                  }
+                  key="4"
+                ></Tabs.Tab>
+              </Tabs>
+            </CapsuleTabs.Tab>
+            <CapsuleTabs.Tab title="赛事评分" key="vegetables">
+              <Tabs
+                className="customInnerTabs bg-white"
+                activeLineMode="fixed"
+                style={
+                  {
+                    "--adm-color-primary": "rgb(29,204,225)",
+                    "--active-line-height": "4px",
+                  } as React.CSSProperties
+                }
+              >
+                <Tabs.Tab
+                  title={
+                    <div className="text-[#3D3D3D] leading-[20px] font-[600]">
+                      A组小组赛
+                    </div>
+                  }
+                  key="1"
+                >
+                  <div className="flex flex-col gap-[10px]">
+                    <div className="flex flex-col shadow rounded-[5px] p-[10px]">
+                      <div className="flex justify-evenly items-center gap-[10px]">
+                        <div className="flex  flex-col items-center  gap-[15px]">
+                          <div className="flex flex-col items-center">
+                            <div className="w-[40px] h-[40px]">
+                              <img
+                                className="rounded-full"
+                                src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head03.jpg"
+                              />
+                            </div>
+                            <div className="opacity-[0.5]">筑梦少年</div>
+                          </div>
+                          <div>编号：18</div>
+                          <div>项目：Match P</div>
+                          <div>
+                            平均分：
+                            {isLoadingScores
+                              ? "加载中..."
+                              : calculateAverage(scores as number[])}
+                          </div>
+                        </div>
+
+                        <div className="flex  flex-col items-center  gap-[15px]">
+                          <div>
+                            创新性：
+                            {isLoadingScores
+                              ? "加载中..."
+                              : formatScore(scores?.[0] || 0)}
+                          </div>
+                          <div>
+                            完整性：
+                            {isLoadingScores
+                              ? "加载中..."
+                              : formatScore(scores?.[1] || 0)}
+                          </div>
+                          <div>
+                            商业价值：
+                            {isLoadingScores
+                              ? "加载中..."
+                              : formatScore(scores?.[2] || 0)}
+                          </div>
+                          <div>
+                            技术实现：
+                            {isLoadingScores
+                              ? "加载中..."
+                              : formatScore(scores?.[3] || 0)}
+                          </div>
+                          <div>权重：80</div>
+                        </div>
+                      </div>
+                      <div
+                        onClick={handleRate}
+                        className="h-[40px] mt-[10px] bg-[#454545] rounded-full text-center text-[16px] leading-[40px] font-[500] text-[#50F5FF]"
+                      >
+                        立即评分
+                      </div>
+                      <div></div>
+                    </div>
+                  </div>
+                </Tabs.Tab>
+                <Tabs.Tab
+                  title={
+                    <div className="text-[#3D3D3D] leading-[20px] font-[600]">
+                      B组小组赛
+                    </div>
+                  }
+                  key="2"
+                ></Tabs.Tab>
+                <Tabs.Tab
+                  title={
+                    <div className="text-[#3D3D3D] leading-[20px] font-[600]">
+                      半决赛
+                    </div>
+                  }
+                  key="3"
+                ></Tabs.Tab>
+                <Tabs.Tab
+                  title={
+                    <div className="text-[#3D3D3D] leading-[20px] font-[600]">
+                      决赛
+                    </div>
+                  }
+                  key="4"
+                ></Tabs.Tab>
+              </Tabs>
+            </CapsuleTabs.Tab>
             <CapsuleTabs.Tab title="赛事投资" key="animals"></CapsuleTabs.Tab>
           </CapsuleTabs>
-
-          <Tabs
-            className="customInnerTabs bg-white"
-            activeLineMode="fixed"
-            style={
-              {
-                marginTop: 12,
-                "--adm-color-primary": "rgb(29,204,225)",
-                "--active-line-height": "4px",
-              } as React.CSSProperties
-            }
-          >
-            <Tabs.Tab
-              title={
-                <div className="text-[#3D3D3D] leading-[20px] font-[600]">
-                  A组小组赛
-                </div>
-              }
-              key="1"
-            >
-              <div className="flex flex-col gap-[10px]">
-                <div className="flex flex-col shadow rounded-[5px] p-[10px]">
-                  <div className="flex justify-center gap-[10px] items-center">
-                    <div className="flex items-center  gap-[15px]">
-                      <div className="flex flex-col items-center">
-                        <div className="w-[40px] h-[40px]">
-                          <img
-                            className="rounded-full"
-                            src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head03.jpg"
-                          />
-                        </div>
-                        <div className="opacity-[0.5]">筑梦少年</div>
-                      </div>
-                      {/* <div
-                        className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
-                        style={{
-                          background:
-                            "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
-                        }}
-                      >
-                        Vote
-                      </div> */}
-                    </div>
-
-                    <div className="flex flex-col items-center">
-                      <div className="w-[40px] p-[3px] text-center rounded-[5px] bg-[#50F5FF]">
-                        3 : 5
-                      </div>
-                      <div className="font-bold">赛后</div>
-                    </div>
-                    <div className="flex items-center  gap-[15px]">
-                      <div className="flex flex-col items-center ">
-                        <div className="w-[40px] h-[40px]">
-                          <img
-                            className="rounded-full"
-                            src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head02.jpg"
-                          />
-                        </div>
-                        <div className="opacity-[0.5]">铠甲战刀</div>
-                      </div>
-
-                      {/* <div
-                        className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
-                        style={{
-                          background:
-                            "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
-                        }}
-                      >
-                        Vote
-                      </div> */}
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-[5px] flex-1 mt-[20px]">
-                    <div className="flex gap-[5px] items-center">
-                      <div className="w-[17px] h-[17px] ">
-                        <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/time_n.png" />
-                      </div>
-                      <div className="text-[#6D6C6B] text-[12px] leading-[20px] font-[400]">
-                        比赛时间: 2024.06.01 20:30-22:30
-                      </div>
-                    </div>
-                    <div className="flex gap-[5px] items-center">
-                      <div className="w-[17px] h-[17px] ">
-                        <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/location_n.png" />
-                      </div>
-                      <div className="text-[#6D6C6B] text-[12px] leading-[20px] font-[400]">
-                        地址: 四川省成都市武侯区天府大道中段1388号
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col shadow rounded-[5px] p-[10px]">
-                  <div className="flex justify-center items-center gap-[10px]">
-                    <div className="flex items-center  gap-[15px]">
-                      <div
-                        className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
-                        style={{
-                          background:
-                            "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
-                        }}
-                      >
-                        Vote
-                      </div>
-                      <div className="flex flex-col items-center">
-                        <div className="w-[40px] h-[40px]">
-                          <img
-                            className="rounded-full"
-                            src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head03.jpg"
-                          />
-                        </div>
-                        <div className="opacity-[0.5]">筑梦少年</div>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col items-center">
-                      <div className="w-[40px] p-[3px] text-center rounded-[5px] bg-[#50F5FF]">
-                        竞猜
-                      </div>
-                      <div className="font-bold">赛前</div>
-                    </div>
-                    <div className="flex items-center  gap-[15px]">
-                      <div className="flex flex-col items-center ">
-                        <div className="w-[40px] h-[40px]">
-                          <img
-                            className="rounded-full"
-                            src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head02.jpg"
-                          />
-                        </div>
-                        <div className="opacity-[0.5]">铠甲战刀</div>
-                      </div>
-
-                      <div
-                        className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
-                        style={{
-                          background:
-                            "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
-                        }}
-                      >
-                        Vote
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-[5px] flex-1 mt-[20px]">
-                    <div className="flex gap-[5px] items-center">
-                      <div className="w-[17px] h-[17px] ">
-                        <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/time_n.png" />
-                      </div>
-                      <div className="text-[#6D6C6B] text-[12px] leading-[20px] font-[400]">
-                        比赛时间: 2024.06.01 20:30-22:30
-                      </div>
-                    </div>
-                    <div className="flex gap-[5px] items-center">
-                      <div className="w-[17px] h-[17px] ">
-                        <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/location_n.png" />
-                      </div>
-                      <div className="text-[#6D6C6B] text-[12px] leading-[20px] font-[400]">
-                        地址: 四川省成都市武侯区天府大道中段1388号
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col shadow rounded-[5px] p-[10px]">
-                  <div className="flex justify-center items-center gap-[10px]">
-                    <div className="flex items-center  gap-[15px]">
-                      {/* <div
-                        className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
-                        style={{
-                          background:
-                            "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
-                        }}
-                      >
-                        Vote
-                      </div> */}
-                      <div className="flex flex-col items-center">
-                        <div className="w-[40px] h-[40px]">
-                          <img
-                            className="rounded-full"
-                            src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head03.jpg"
-                          />
-                        </div>
-                        <div className="opacity-[0.5]">筑梦少年</div>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col items-center">
-                      <div className="w-[40px] p-[3px] text-center rounded-[5px] bg-[#50F5FF]">
-                        竞猜
-                      </div>
-                      <div className="font-bold">赛中</div>
-                    </div>
-                    <div className="flex items-center  gap-[15px]">
-                      <div className="flex flex-col items-center ">
-                        <div className="w-[40px] h-[40px]">
-                          <img
-                            className="rounded-full"
-                            src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head02.jpg"
-                          />
-                        </div>
-                        <div className="opacity-[0.5]">铠甲战刀</div>
-                      </div>
-
-                      {/* <div
-                        className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
-                        style={{
-                          background:
-                            "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
-                        }}
-                      >
-                        Vote
-                      </div> */}
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-[5px] flex-1 mt-[20px]">
-                    <div className="flex gap-[5px] items-center">
-                      <div className="w-[17px] h-[17px] ">
-                        <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/time_n.png" />
-                      </div>
-                      <div className="text-[#6D6C6B] text-[12px] leading-[20px] font-[400]">
-                        比赛时间: 2024.06.01 20:30-22:30
-                      </div>
-                    </div>
-                    <div className="flex gap-[5px] items-center">
-                      <div className="w-[17px] h-[17px] ">
-                        <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/location_n.png" />
-                      </div>
-                      <div className="text-[#6D6C6B] text-[12px] leading-[20px] font-[400]">
-                        地址: 四川省成都市武侯区天府大道中段1388号
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Tabs.Tab>
-            <Tabs.Tab
-              title={
-                <div className="text-[#3D3D3D] leading-[20px] font-[600]">
-                  B组小组赛
-                </div>
-              }
-              key="2"
-            ></Tabs.Tab>
-            <Tabs.Tab
-              title={
-                <div className="text-[#3D3D3D] leading-[20px] font-[600]">
-                  半决赛
-                </div>
-              }
-              key="3"
-            ></Tabs.Tab>
-            <Tabs.Tab
-              title={
-                <div className="text-[#3D3D3D] leading-[20px] font-[600]">
-                  决赛
-                </div>
-              }
-              key="4"
-            ></Tabs.Tab>
-          </Tabs>
         </Tabs.Tab>
       </Tabs>
 
@@ -594,7 +883,8 @@ const Chat = () => {
     request: async ({ message }, { onSuccess, onError }) => {
       try {
         await new Promise((resolve) => setTimeout(resolve, 2000));
-        onSuccess(`Received ${message}`);
+        // onSuccess(`Received ${message}`);
+        onSuccess("好的");
       } catch (error) {
         console.error("Failed to generate a response:", error);
         onError(new Error());
@@ -607,7 +897,6 @@ const Chat = () => {
     requestPlaceholder: "Waiting...",
     requestFallback: "Sorry, I can not answer your question now",
   });
-  console.log("messages:", messages);
 
   const presetMessages = [
     {

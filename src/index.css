@@ -132,7 +132,6 @@
   }
   .adm-tabs-tab-list{
     width: 200px;
-    padding-top: 10px;
     margin-left: 10px;
   }
   .adm-capsule-tabs-header{
@@ -142,13 +141,11 @@
 }
 
 .customInnerTabs{
-
   .adm-tabs-header{
     border: none
   }
   .adm-tabs-tab-list{
     width: auto;
-    padding-top: 10px;
     margin-left: 10px;
   }
   .adm-capsule-tabs-header{
