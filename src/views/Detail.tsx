@@ -6,6 +6,7 @@ import {
   FloatingBubble,
   Popup,
   Avatar,
+  Badge,
 } from "antd-mobile";
 import { MessageFill } from "antd-mobile-icons";
 import { useNavigate } from "react-router";
@@ -28,6 +29,7 @@ export const Detail = () => {
   };
 
   const [visible, setVisible] = useState(false);
+  const [showBadgeCount, setShowBadgeCount] = useState(true);
 
   return (
     <div
@@ -552,8 +554,10 @@ export const Detail = () => {
       </div>
 
       <FloatingBubble
+        className="custom-floating-bubble"
         onClick={() => {
           setVisible(true);
+          setShowBadgeCount(false);
         }}
         style={{
           "--initial-position-bottom": "110px",
@@ -562,7 +566,9 @@ export const Detail = () => {
           "--background": "rgba(80, 245, 255, 1)",
         }}
       >
-        <MessageFill fontSize={32} />
+        <Badge content={showBadgeCount ? "3" : ""}>
+          <MessageFill fontSize={32} />
+        </Badge>
       </FloatingBubble>
 
       <Popup

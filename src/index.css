@@ -156,3 +156,9 @@
   }
   
 }
+
+.custom-floating-bubble{
+  .adm-floating-bubble-button{
+    overflow: visible
+  }
+}
