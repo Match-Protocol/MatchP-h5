@@ -1,11 +1,23 @@
-import { NavBar, Swiper, Tabs, CapsuleTabs, FloatingBubble } from "antd-mobile";
+import {
+  NavBar,
+  Swiper,
+  Tabs,
+  CapsuleTabs,
+  FloatingBubble,
+  Popup,
+  Avatar,
+} from "antd-mobile";
 import { MessageFill } from "antd-mobile-icons";
 import { useNavigate } from "react-router";
+import { Bubble, Sender, useXChat, useXAgent } from "@ant-design/x";
 
 import team from "../assets/team/teams.jpeg";
 import detail1 from "../assets/detail/detail1.jpg";
 import detail2 from "../assets/detail/detail2.jpg";
 import detail3 from "../assets/detail/detail3.jpg";
+import tintinland from "../assets/icon/tintinland.png";
+
+import { useState } from "react";
 
 export const Detail = () => {
   const navigate = useNavigate();
@@ -13,6 +25,8 @@ export const Detail = () => {
   const back = () => {
     navigate(-1);
   };
+
+  const [visible, setVisible] = useState(false);
 
   return (
     <div
@@ -28,7 +42,7 @@ export const Detail = () => {
         onBack={back}
       >
         <div className="flex items-center absolute left-[45px] top-[10px] z-10">
-          <div
+          {/* <div
             style={{
               width: "26px",
               height: "26px",
@@ -41,12 +55,13 @@ export const Detail = () => {
               backgroundSize: "100% 100%",
               backgroundRepeat: "no-repeat",
             }}
-          ></div>
-          <div className="tl-font !text-[#000000] text-[17px] !font-[700]">
-            Variety Labs
+          ></div> */}
+          <img className="h-[26px]" src={tintinland} />
+          <div className="tl-font !text-[#000000] text-[17px] !font-[700] ml-[3px]">
+            Tin Tin Land
           </div>
           <div className="tl-tribe-type">
-            <span>DAO</span>
+            <span>俱乐部</span>
           </div>
         </div>
       </NavBar>
@@ -56,10 +71,7 @@ export const Detail = () => {
         <Swiper loop className="mb-[11px]">
           <Swiper.Item>
             <div className="px-[12px] pt-[50px] ">
-              <img
-                className="rounded-[10px]"
-                src={detail1}
-              />
+              <img className="rounded-[10px]" src={detail1} />
             </div>
           </Swiper.Item>
           {/* <Swiper.Item>
@@ -106,7 +118,7 @@ export const Detail = () => {
                 <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/time_n.png" />
               </div>
               <div className="text-[#6D6C6B] text-[14px] leading-[23px] font-[400]">
-                活动时间: 04.07 10:00-04.09 18:00
+                活动时间: 06.01周五-06.03周一
               </div>
             </div>
             <div className="flex gap-[5px] items-center">
@@ -542,6 +554,9 @@ export const Detail = () => {
       </div>
 
       <FloatingBubble
+        onClick={() => {
+          setVisible(true);
+        }}
         style={{
           "--initial-position-bottom": "110px",
           "--initial-position-right": "14px",
@@ -551,6 +566,111 @@ export const Detail = () => {
       >
         <MessageFill fontSize={32} />
       </FloatingBubble>
+
+      <Popup
+        visible={visible}
+        onMaskClick={() => setVisible(false)}
+        bodyStyle={{
+          borderTopLeftRadius: "8px",
+          borderTopRightRadius: "8px",
+          height: "60vh",
+        }}
+      >
+        <div className="h-full p-[20px] relative">
+          <Chat />
+        </div>
+      </Popup>
+    </div>
+  );
+};
+
+const Chat = () => {
+  const [value, setValue] = useState("");
+  const [agent] = useXAgent({
+    request: async ({ message }, { onSuccess, onError }) => {
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        onSuccess(`Received ${message}`);
+      } catch (error) {
+        console.error("Failed to generate a response:", error);
+        onError(new Error());
+      }
+    },
+  });
+
+  const { onRequest, messages } = useXChat({
+    agent,
+    requestPlaceholder: "Waiting...",
+    requestFallback: "Sorry, I can not answer your question now",
+  });
+  console.log("messages:", messages);
+
+  const presetMessages = [
+    {
+      id: "1",
+      role: "ai",
+      message:
+        "❗️❗️今天中午12点前，大家抓紧进行项目登记！并确认 项目的【项目名称】、【参赛赛道】、【GitHub链接】12:00之后将不接受更改和新项目登记啦！",
+    },
+    {
+      id: "2",
+      role: "ai",
+      message: "WiFi名字和密码都是JLINKHOTEL",
+      status: "success",
+    },
+    {
+      id: "3",
+      role: "ai",
+      message: "PPT和演讲视频均需为 英文 啦",
+      status: "success",
+    },
+  ];
+  const items = [...presetMessages, ...messages].map(
+    ({ id, message, status }) => ({
+      key: id,
+      loading: status === "loading",
+      role: status === "local" ? "local" : "ai",
+      content: message,
+    })
+  );
+  return (
+    <div className="flex flex-col h-full gap-[20px]">
+      <Bubble.List
+        className="h-full"
+        items={items}
+        roles={{
+          ai: {
+            placement: "start",
+            typing: { step: 10 },
+            avatar: {
+              icon: <Avatar src={tintinland} />,
+              style: { background: "#fde3cf" },
+            },
+          },
+          local: {
+            placement: "end",
+            variant: "shadow",
+            avatar: {
+              icon: (
+                <Avatar src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/head/head03.jpg" />
+              ),
+              style: { background: "#87d068" },
+            },
+          },
+        }}
+      />
+      <Sender
+        className=""
+        value={value}
+        onSubmit={(nextVal) => {
+          onRequest(nextVal);
+          setValue("");
+        }}
+        onChange={(nextVal) => {
+          setValue(nextVal);
+        }}
+        loading={agent.isRequesting()}
+      />
     </div>
   );
 };
