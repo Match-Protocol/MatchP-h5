@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import banner from "../assets/banner/banner2@2x.png";
 import activity1 from "../assets/activity/activity1.jpg";
 import activity2 from "../assets/activity/activity2.png";
+import activity3 from "../assets/activity/activity3.png";
 import hackathon from "../assets/icon/hackathon.png";
 
 export const Home = () => {
@@ -186,9 +187,13 @@ export const Home = () => {
             <img src={activity1} />
           </div>
 
-<div>            <img src={activity2} />
-</div>
+          <div>
+            <img src={activity2} />
+          </div>
 
+          <div>
+            <img src={activity3} />
+          </div>
           {/* <Card
             style={
               { "--adm-card-padding-inline": "10px" } as React.CSSProperties
@@ -296,8 +301,6 @@ export const Home = () => {
               </div>
             </div>
           </Card> */}
-  
-  
         </div>
       </div>
     </div>
