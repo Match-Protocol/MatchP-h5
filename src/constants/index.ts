@@ -1,2 +1,2 @@
-export const matchTokenAddress = "0xBC649E21df0fCf476C0eFE5Cb8339FA9f756d7Eb";
-export const matchPAddress = "0xf2267a52A11875b5e7D9089807c954B081D38618";
+export const matchTokenAddress = "0xffbc2aA0bf5B6f722a98Cc0563968134227Ca4a1";
+export const matchPAddress = "0x543f682BEd4458Ec024528b228052e5723D9531B";
