@@ -356,7 +356,7 @@ console.log(finalScore)
               <div className="w-[17px] h-[17px] ">
                 <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/time_n.png" />
               </div>
-              <div className="text-[#6D6C6B] text-[14px] leading-[23px] font-[400]">
+              <div className="text-[#6D6C6B] text-[13px] leading-[23px] font-[400]">
                 活动时间: 06.01周五-06.03周一
               </div>
             </div>
@@ -364,7 +364,7 @@ console.log(finalScore)
               <div className="w-[17px] h-[17px] ">
                 <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/location_n.png" />
               </div>
-              <div className="text-[#6D6C6B] text-[14px] leading-[23px] font-[400]">
+              <div className="text-[#6D6C6B] text-[13px] leading-[23px] font-[400]">
                 活动地址: 香港湾仔港湾道23号...
               </div>
             </div>
@@ -661,10 +661,10 @@ console.log(finalScore)
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-col shadow rounded-[5px] p-[10px]">
+                    {/* <div className="flex flex-col shadow rounded-[5px] p-[10px]">
                       <div className="flex justify-center items-center gap-[10px]">
                         <div className="flex items-center  gap-[15px]">
-                          {/* <div
+                          <div
                         className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
                         style={{
                           background:
@@ -672,7 +672,7 @@ console.log(finalScore)
                         }}
                       >
                         Vote
-                      </div> */}
+                      </div>
                           <div className="flex flex-col items-center">
                             <div className="w-[40px] h-[40px]">
                               <img
@@ -701,7 +701,7 @@ console.log(finalScore)
                             <div className="opacity-[0.5]">铠甲战刀</div>
                           </div>
 
-                          {/* <div
+                          <div
                         className="w-[50px] h-[20px] text-[#454545] font-[700] text-center rounded-[23px]"
                         style={{
                           background:
@@ -709,7 +709,7 @@ console.log(finalScore)
                         }}
                       >
                         Vote
-                      </div> */}
+                      </div>
                         </div>
                       </div>
                       <div className="flex flex-col gap-[5px] flex-1 mt-[20px]">
@@ -730,7 +730,7 @@ console.log(finalScore)
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </Tabs.Tab>
                 <Tabs.Tab
