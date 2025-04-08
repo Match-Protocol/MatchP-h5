@@ -223,6 +223,7 @@ export const Detail = () => {
     if (isConfirmed && txHash) {
       if (localStorage.getItem("txType") === "rate") {
         Toast.show({ content: "评分成功！" });
+        refetchFinalScore();
       } else {
         Toast.show({ content: "投票成功！" });
         setVoteLoading(false);
@@ -234,6 +235,37 @@ export const Detail = () => {
   }, [isConfirmed, refetchScores, txHash]);
 
   // 获取投票数据
+  const {
+    data: finalScore,
+    refetch: refetchFinalScore,
+    isLoading: isLoadingFinalScore,
+  } = useReadContract({
+    address: matchPAddress,
+    abi: matchPABI,
+    functionName: "finalScore",
+    args: [BigInt(1), playerAddress1, playerAddress2],
+    query: {
+      enabled: !!1,
+    },
+  });
+
+  useEffect(()=>{
+console.log(finalScore)
+  },[finalScore])
+  // 格式化比分显示
+  const formatFinalScore = () => {
+    if (!finalScore || !Array.isArray(finalScore) || finalScore.length < 2) {
+      return "待揭晓";
+    }
+
+    const [score1, score2] = finalScore;
+    // 如果两边分数都大于0，则显示比分，否则显示待揭晓
+    if (Number(score1) > 0 && Number(score2) > 0) {
+      return `${score1} : ${score2}`;
+    } else {
+      return "待揭晓";
+    }
+  };
 
   return (
     <div
@@ -578,12 +610,14 @@ export const Detail = () => {
                         </div>
 
                         <div className="flex flex-col items-center">
-                          <div className="w-[40px] p-[3px] text-center rounded-[5px] bg-[#50F5FF]">
-                            竞猜
+                          <div className="w-[45px] p-[3px] text-center rounded-[5px] bg-[#50F5FF]">
+                            {isLoadingFinalScore
+                              ? "加载中..."
+                              : formatFinalScore()}
                           </div>
                           <div className="font-bold">赛前</div>
                         </div>
-                        <div className="flex items-center  gap-[15px]">
+                        <div className="flex items-center gap-[10px]">
                           <div className="flex flex-col items-center ">
                             <div className="w-[40px] h-[40px]">
                               <img

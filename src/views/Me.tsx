@@ -6,6 +6,7 @@ import { SetOutline, ScanningOutline } from "antd-mobile-icons";
 import { useWriteContract, useReadContract,useWaitForTransactionReceipt } from "wagmi";
 
 import walletIcon from "../assets/wallet.png";
+import mToken from "../assets/icon/mToken.jpeg";
 
 import { matchPABI } from "../abis/matchP";
 import { matchTokenABI } from "../abis/matchToken";
@@ -189,8 +190,8 @@ export const Me = () => {
           <div className="flex">
             <div className="flex-1 py-3 px-4 flex items-center gap-[7px]">
               <img
-                className="w-[15px] h-[15px]"
-                src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/my_wz.png"
+                className="w-[15px] h-[15px] rounded-full"
+                src={mToken}
               ></img>
               <span className="text-gray-300">MATCH</span>
               <span className="text-white font-bold">{Number(balance) || 0}</span>
