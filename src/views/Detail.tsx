@@ -47,12 +47,22 @@ export const Detail = () => {
   const [voteLoading, setVoteLoading] = useState(false);
   const [approveHash, setApproveHash] = useState<`0x${string}` | undefined>();
   const { writeContractAsync } = useWriteContract();
-  const { isSuccess: isApproveConfirmed } = useWaitForTransactionReceipt({
-    hash: approveHash,
-    query: {
-      enabled: !!approveHash,
-    },
-  });
+  const { isSuccess: isApproveConfirmed, isError: approveError } =
+    useWaitForTransactionReceipt({
+      hash: approveHash,
+      query: {
+        enabled: !!approveHash,
+      },
+    });
+
+  useEffect(() => {
+    if (approveError) {
+      Toast.show({ content: "投票授权交易执行失败！" });
+      console.error("投票授权交易执行失败！");
+      setVoteLoading(false);
+    }
+  }, [approveError]);
+
   const handleVote = async (leftVote: boolean) => {
     const playerAddress = leftVote ? playerAddress1 : playerAddress2;
     const value = leftVote ? 30 : 50;
@@ -138,7 +148,6 @@ export const Detail = () => {
       enabled: !!1,
     },
   });
-  console.log(scores);
   const formatScore = (score: number) => {
     if (!score) return 0;
     return (score / 10).toFixed(1);
@@ -181,31 +190,44 @@ export const Detail = () => {
       });
       setTxHash(hash);
     } catch (error) {
-      Toast.show({ content: "Rate失败！" });
-      console.error("Rate失败:", error);
+      Toast.show({ content: "评分失败！" });
+      console.error("评分失败:", error);
     } finally {
       Toast.clear();
       Toast.show({ content: "交易已提交，等待确认..." });
     }
   };
 
-  const { isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+  const { isSuccess: isConfirmed, isError } = useWaitForTransactionReceipt({
     hash: txHash,
     query: {
       enabled: !!txHash,
     },
   });
 
+  useEffect(() => {
+    if (isError) {
+      if (localStorage.getItem("txType") === "rate") {
+        Toast.show({ content: "评分交易执行失败！" });
+        console.error("评分交易执行失败！");
+      } else {
+        Toast.show({ content: "投票交易执行失败！" });
+        console.error("投票交易执行失败！");
+        setVoteLoading(false);
+      }
+    }
+  }, [isError]);
+
   // 监听交易确认状态
   useEffect(() => {
     if (isConfirmed && txHash) {
       if (localStorage.getItem("txType") === "rate") {
-        Toast.show({ content: "Rate成功！" });
+        Toast.show({ content: "评分成功！" });
       } else {
         Toast.show({ content: "投票成功！" });
         setVoteLoading(false);
+        refetchScores();
       }
-      refetchScores();
       // 清除交易哈希，避免重复处理
       setTxHash(undefined);
     }
