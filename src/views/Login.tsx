@@ -16,7 +16,7 @@ export const Login = () => {
         if (address) {
             navigate("/me")
         }
-    }, [address])
+    }, [address, navigate])
     
     return <div className="flex flex-col h-[100vh] justify-center items-center gap-[150px]">
         <img className="w-[120px] rounded-full" src={logo} />

@@ -56,7 +56,7 @@ export const Me = () => {
         } else {
             navigate("/login")
         }
-    }, [address, refetchBalance]);
+    }, [address, navigate, refetchBalance, refetchVoteBalance]);
 
     useEffect(() => {
         if (!address) return
@@ -79,7 +79,7 @@ export const Me = () => {
         }
 
         login()
-    }, [address])
+    }, [address, navigate])
 
     if (!address) return null;
 

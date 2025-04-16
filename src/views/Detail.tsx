@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     NavBar,
     Swiper,
@@ -19,7 +20,7 @@ import {
     useReadContract,
     useWaitForTransactionReceipt,
 } from "wagmi";
-import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
+import { useAppKitAccount } from "@reown/appkit/react";
 
 import team from "../assets/team/teams.jpeg";
 import detail1 from "../assets/detail/detail1.jpg";
@@ -31,8 +32,7 @@ import starFull from "../assets/icon/star-full.svg"
 import starEmpty from "../assets/icon/star-empty.svg"
 
 import { matchPABI } from "../abis/matchP";
-import { matchTokenABI } from "../abis/matchToken";
-import { matchTokenAddress, matchPAddress } from "../constants";
+import { matchPAddress } from "../constants";
 
 import { useEffect, useState } from "react";
 export const Detail = () => {
@@ -70,13 +70,13 @@ export const Detail = () => {
         refetchGetAllGames();
     })
 
-    const handleJoinGame = async (gameInfo: any) => {
+    const handleJoinGame = async (gameInfo: { id: bigint; name: string; players: readonly `0x${string}`[]; startTime: bigint; endTime: bigint; isSettled: bigint; player0Balance: bigint; player1Balance: bigint; }) => {
         if (gameInfo.players.length < 2) {
             Toast.show({ content: "加入比赛中..." });
             return await joinGame(gameInfo.id)
         }
     }
-    const handleVote = async (gameInfo: any) => {
+    const handleVote = async (gameInfo: { id: bigint; name: string; players: readonly `0x${string}`[]; startTime: bigint; endTime: bigint; isSettled: bigint; player0Balance: bigint; player1Balance: bigint; }) => {
         const handler = Modal.show({
             content: <Vote gameInfo={gameInfo} onClose={() => handler.close()} onVote={vote} />,
             closeOnMaskClick: true,
@@ -578,6 +578,7 @@ export const Detail = () => {
     );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useCreateGame = (onSuccess?: () => void) => {
     const { writeContractAsync } = useWriteContract();
     const [txHash, setTxHash] = useState<`0x${string}` | undefined>();
@@ -626,6 +627,7 @@ export const useCreateGame = (onSuccess?: () => void) => {
     return { createGame };
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useJoinGame = (onSuccess?: () => void) => {
     const { writeContractAsync } = useWriteContract();
     const [txHash, setTxHash] = useState<`0x${string}` | undefined>();
@@ -820,7 +822,7 @@ const Chat = () => {
     );
 };
 
-const Rate = ({ onClose }: { onClose: Function }) => {
+const Rate = ({ onClose }: { onClose: () => void }) => {
     // 创新性，完整性，商业价值，技术实现 【1-5】
     const items = [
         { label: "创新性", value: "creativity" },
@@ -871,7 +873,7 @@ const Rate = ({ onClose }: { onClose: Function }) => {
         {/* {JSON.stringify(ratings,null,2)} */}
     </div>)
 }
-const StarRate = ({ value, max, onChange }: { value: number, max: number, onChange: Function }) => {
+const StarRate = ({ value, max, onChange }: { value: number, max: number, onChange: (val: number) => void }) => {
     const handleClick = (value: number) => {
         onChange(value)
     }
@@ -890,7 +892,7 @@ const StarRate = ({ value, max, onChange }: { value: number, max: number, onChan
 
 const Vote = ({ gameInfo, onClose, onVote }: {
     gameInfo: any,
-    onClose: Function, onVote: (gameId: bigint,
+    onClose: () => void, onVote: (gameId: bigint,
         player: `0x${string}`,
         amount: bigint) => Promise<string>
 }) => {
