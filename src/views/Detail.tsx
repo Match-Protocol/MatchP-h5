@@ -538,7 +538,7 @@ export const Detail = () => {
                             background: "linear-gradient( 90deg, #F9A9F2 0%, #B9FBFF 100%)",
                         }}
                     >
-                        报名 (¥120/人)
+                        报名 (¥50/人)
                     </div>
                 </div>
             </div>
