@@ -62,7 +62,7 @@ export const Me = () => {
         if (!address) return
         const login = async () => {
             try {
-                const response = await fetch('http://8.138.133.167:8080/login', {
+                const response = await fetch('https://8.138.133.167/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
