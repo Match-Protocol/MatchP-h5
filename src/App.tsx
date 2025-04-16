@@ -1,3 +1,4 @@
+import type { FC } from "react";
 import {
   Routes,
   Route,
@@ -6,7 +7,6 @@ import {
   useNavigate,
   useLocation,
 } from "react-router";
-import type { FC } from "react";
 import { TabBar } from "antd-mobile";
 import { createAppKit } from "@reown/appkit/react";
 import { WagmiProvider } from "wagmi";
@@ -15,15 +15,17 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { projectId, metadata, networks, wagmiAdapter } from "./config";
 
 import { Home } from "./views/Home";
-import { Chat } from "./views/Chat";
 import { Me } from "./views/Me";
 import { Detail } from "./views/Detail";
+import { Login } from "./views/Login"
 
 import createIcon from "./assets/tabbar/create_icon.png";
 import indexIcon from "./assets/tabbar/index_icon.png";
 import indexIconSelected from "./assets/tabbar/index_icon_selected.png";
 import myIcon from "./assets/tabbar/my_icon.png";
 import myIconSelected from "./assets/tabbar/my_icon_selected.png";
+
+import { useCreateGame } from "./views/Detail";
 
 const queryClient = new QueryClient();
 
@@ -50,15 +52,19 @@ createAppKit({
     "--w3m-accent": "#000000",
   },
 });
-
 const Bottom: FC = () => {
   const location = useLocation();
   const { pathname } = location;
 
   const navigate = useNavigate();
-
-  const setRouteActive = (value: string) => {
-    if (value === "/chat") return;
+  const { createGame } = useCreateGame()
+  const setRouteActive = async (value: string) => {
+    if (value === "/chat") {
+      await createGame('测试赛事', 
+        BigInt(Math.floor(new Date('2025-04-25T00:00:00Z').getTime() / 1000)), 
+        BigInt(Math.floor(new Date('2025-05-25T00:00:00Z').getTime() / 1000)))
+      return;
+    }
     navigate(value);
   };
 
@@ -67,9 +73,8 @@ const Bottom: FC = () => {
       key: "/home",
       title: (active: boolean) => (
         <span
-          className={`text-[14px] ${
-            active ? "text-[rgb(48,49,51)]" : "text-[rgb(96,98,102)]"
-          }`}
+          className={`text-[14px] ${active ? "text-[rgb(48,49,51)]" : "text-[rgb(96,98,102)]"
+            }`}
         >
           赛事
         </span>
@@ -94,9 +99,8 @@ const Bottom: FC = () => {
       key: "/me",
       title: (active: boolean) => (
         <span
-          className={`text-[14px] ${
-            active ? "text-[rgb(48,49,51)]" : "text-[rgb(96,98,102)]"
-          }`}
+          className={`text-[14px] ${active ? "text-[rgb(48,49,51)]" : "text-[rgb(96,98,102)]"
+            }`}
         >
           我
         </span>
@@ -112,7 +116,7 @@ const Bottom: FC = () => {
 
   return (
     <div className="h-[100vh] flex flex-col justify-between">
-      <div className="flex-1 overflow-auto pb-[50px]">
+      <div className="flex-1 pb-[50px]">
         <Outlet />
       </div>
       <div className="fixed bottom-0 left-0 right-0 bg-white z-10">
@@ -137,14 +141,14 @@ function App() {
           <Route path="/" element={<Bottom />}>
             <Route index element={<Navigate to="/home" replace />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/chat" element={<Chat />} />
             <Route path="/me" element={<Me />} />
           </Route>
+          <Route path="/login" element={<Login />} />
           <Route path="/detail" element={<Detail />} />
         </Routes>
       </QueryClientProvider>
     </WagmiProvider>
-  );
+  )
 }
 
-export default App;
+export default App

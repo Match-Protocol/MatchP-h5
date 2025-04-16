@@ -9,192 +9,192 @@ import activity3 from "../assets/activity/activity3.png";
 import hackathon from "../assets/icon/hackathon.png";
 
 export const Home = () => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  return (
-    <div
-      className="flex flex-col bg-gray-100 h-[100%]"
-      style={{
-        background:
-          "linear-gradient(180deg, rgba(112, 191, 255, 0.2706) 0%, rgba(226, 156, 228, 0) 80%)",
-      }}
-    >
-      {/* 顶部导航栏 */}
-      <div
-        className="flex items-center p-3 bg-white border-b border-gray-200 w-[100vw]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgb(211, 232, 248) 0%, rgb(213, 233, 248) 5%)",
-        }}
-      >
-        <img
-          src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/inform_icon.png"
-          width="23px"
-          height="23px"
-        />
+    return (
+        <div
+            className="flex flex-col bg-gray-100 h-[100%]"
+            style={{
+                background:
+                    "linear-gradient(180deg, rgba(112, 191, 255, 0.2706) 0%, rgba(226, 156, 228, 0) 80%)",
+            }}
+        >
+            {/* 顶部导航栏 */}
+            <div
+                className="flex items-center p-3 bg-white border-b border-gray-200 w-[100vw]"
+                style={{
+                    backgroundImage:
+                        "linear-gradient(rgb(211, 232, 248) 0%, rgb(213, 233, 248) 5%)",
+                }}
+            >
+                <img
+                    src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/inform_icon.png"
+                    width="23px"
+                    height="23px"
+                />
 
-        <div className="flex-1 mx-2">
-          <SearchBar placeholder="搜索活动..." className="rounded-full" />
-        </div>
+                <div className="flex-1 mx-2">
+                    <SearchBar placeholder="搜索活动..." className="rounded-full" />
+                </div>
 
-        <Space>
-          <ScanningOutline className="text-gray-600" fontSize={23} />
-          <MoreOutline className="text-gray-600" fontSize={23} />
-        </Space>
-      </div>
-      {/* 轮播图 */}
-      <Swiper loop autoplay className="mb-[11px]">
-        <Swiper.Item>
-          <div className="px-[12px] pt-[12px] ">
-            <img className="rounded-[5px]" src={banner} />
-          </div>
-        </Swiper.Item>
-        {/* <Swiper.Item>
+                <Space>
+                    <ScanningOutline className="text-gray-600" fontSize={23} />
+                    <MoreOutline className="text-gray-600" fontSize={23} />
+                </Space>
+            </div>
+            {/* 轮播图 */}
+            <Swiper loop autoplay className="mb-[11px]">
+                <Swiper.Item>
+                    <div className="px-[12px] pt-[12px] ">
+                        <img className="rounded-[5px]" src={banner} />
+                    </div>
+                </Swiper.Item>
+                {/* <Swiper.Item>
           <div className="px-[12px] pt-[12px] ">
             <img className="rounded-[5px]" src={banner} />
           </div>
         </Swiper.Item> */}
-      </Swiper>
+            </Swiper>
 
-      {/* 筛选列表 */}
-      <div
-        className="rounded-t-lg relative"
-        style={{
-          background: "linear-gradient(180deg, #FFFFFF 0%, #fcfcfc 100%)",
-          padding: "18px 18px 11px 18px",
-        }}
-      >
-        <Space align="center">
-          <div className="relative z-[2] text-[24px] leading-[28px]">推荐</div>
-          <div
-            className="absolute left-[18px] top-[35px]"
-            style={{
-              width: "48px",
-              height: "11px",
-              background: "linear-gradient(90deg, #F9A9F2 0%, #B9FBFF 100%)",
-            }}
-          ></div>
-          <Space align="center">
-            <img
-              width="20px"
-              height="20px"
-              src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/home/ball.png"
-            />
-            <span className="-ml-[5px] text-[18px] text-[#767676] leading-[28px] font-bold ">
-              运动赛事
-            </span>
-          </Space>
-          <Space align="center">
-            <img
-              width="20px"
-              height="20px"
-              src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/home/9.png"
-            />
-            <span className="-ml-[5px] text-[18px] text-[#767676] leading-[28px] font-bold">
-              亲子赛事
-            </span>
-          </Space>
-          <Space align="center">
-            <img width="20px" height="20px" src={hackathon} />
-            <span className="-ml-[5px] text-[18px] text-[#767676] leading-[28px] font-bold">
-              黑客松
-            </span>
-          </Space>
-        </Space>
-
-        <div className="flex justify-between mt-[15px]">
-          <div
-            className="flex items-center gap-[3px]"
-            style={{
-              borderRadius: "34px",
-              fontWeight: "500",
-              color: "#3D3D3D",
-              background: "#F7F7F7",
-              height: "34px",
-              fontSize: "16px",
-              lineHeight: "18px",
-              padding: "0 11px",
-            }}
-          >
-            <div className="w-[18px] h-[18px]">
-              <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/location_blue_icon.png"></img>
-            </div>
-            <span>定位</span>
-          </div>
-
-          <div className="flex gap-[5px]">
+            {/* 筛选列表 */}
             <div
-              className="flex items-center gap-[3px]"
-              style={{
-                borderRadius: "34px",
-                fontWeight: "500",
-                color: "rgb(96, 98, 102)",
-                background: "#F7F7F7",
-                height: "34px",
-                fontSize: "13px",
-                lineHeight: "18px",
-                padding: "0 11px",
-              }}
+                className="rounded-t-lg relative"
+                style={{
+                    background: "linear-gradient(180deg, #FFFFFF 0%, #fcfcfc 100%)",
+                    padding: "18px 18px 11px 18px",
+                }}
             >
-              <span>时间</span>
-              <DownFill fontSize={12} />
+                <Space align="center">
+                    <div className="relative z-[2] text-[24px] leading-[28px]">推荐</div>
+                    <div
+                        className="absolute left-[18px] top-[35px]"
+                        style={{
+                            width: "48px",
+                            height: "11px",
+                            background: "linear-gradient(90deg, #F9A9F2 0%, #B9FBFF 100%)",
+                        }}
+                    ></div>
+                    <Space align="center">
+                        <img
+                            width="20px"
+                            height="20px"
+                            src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/home/ball.png"
+                        />
+                        <span className="-ml-[5px] text-[18px] text-[#767676] leading-[28px] font-bold ">
+                            运动赛事
+                        </span>
+                    </Space>
+                    <Space align="center">
+                        <img
+                            width="20px"
+                            height="20px"
+                            src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/home/9.png"
+                        />
+                        <span className="-ml-[5px] text-[18px] text-[#767676] leading-[28px] font-bold">
+                            亲子赛事
+                        </span>
+                    </Space>
+                    <Space align="center">
+                        <img width="20px" height="20px" src={hackathon} />
+                        <span className="-ml-[5px] text-[18px] text-[#767676] leading-[28px] font-bold">
+                            黑客松
+                        </span>
+                    </Space>
+                </Space>
+
+                <div className="flex justify-between mt-[15px]">
+                    <div
+                        className="flex items-center gap-[3px]"
+                        style={{
+                            borderRadius: "34px",
+                            fontWeight: "500",
+                            color: "#3D3D3D",
+                            background: "#F7F7F7",
+                            height: "34px",
+                            fontSize: "16px",
+                            lineHeight: "18px",
+                            padding: "0 11px",
+                        }}
+                    >
+                        <div className="w-[18px] h-[18px]">
+                            <img src="https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/location_blue_icon.png"></img>
+                        </div>
+                        <span>定位</span>
+                    </div>
+
+                    <div className="flex gap-[5px]">
+                        <div
+                            className="flex items-center gap-[3px]"
+                            style={{
+                                borderRadius: "34px",
+                                fontWeight: "500",
+                                color: "rgb(96, 98, 102)",
+                                background: "#F7F7F7",
+                                height: "34px",
+                                fontSize: "13px",
+                                lineHeight: "18px",
+                                padding: "0 11px",
+                            }}
+                        >
+                            <span>时间</span>
+                            <DownFill fontSize={12} />
+                        </div>
+                        <div
+                            className="flex items-center gap-[3px]"
+                            style={{
+                                borderRadius: "34px",
+                                fontWeight: "500",
+                                color: "rgb(96, 98, 102)",
+                                background: "#F7F7F7",
+                                height: "34px",
+                                fontSize: "13px",
+                                lineHeight: "18px",
+                                padding: "0 11px",
+                            }}
+                        >
+                            <span>线上</span>
+                            <DownFill fontSize={12} />
+                        </div>
+                        <div
+                            className="flex items-center gap-[3px]"
+                            style={{
+                                borderRadius: "34px",
+                                fontWeight: "500",
+                                color: "rgb(96, 98, 102)",
+                                background: "#F7F7F7",
+                                height: "34px",
+                                fontSize: "13px",
+                                lineHeight: "18px",
+                                padding: "0 11px",
+                            }}
+                        >
+                            <span>玩籽抵扣</span>
+                            <DownFill fontSize={12} />
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            {/* 活动列表 */}
             <div
-              className="flex items-center gap-[3px]"
-              style={{
-                borderRadius: "34px",
-                fontWeight: "500",
-                color: "rgb(96, 98, 102)",
-                background: "#F7F7F7",
-                height: "34px",
-                fontSize: "13px",
-                lineHeight: "18px",
-                padding: "0 11px",
-              }}
+                style={{
+                    background:
+                        "linear-gradient(180deg, rgba(251, 251, 251, 0.97) 0%, rgba(226, 156, 228, 0) 44%)",
+                }}
             >
-              <span>线上</span>
-              <DownFill fontSize={12} />
-            </div>
-            <div
-              className="flex items-center gap-[3px]"
-              style={{
-                borderRadius: "34px",
-                fontWeight: "500",
-                color: "rgb(96, 98, 102)",
-                background: "#F7F7F7",
-                height: "34px",
-                fontSize: "13px",
-                lineHeight: "18px",
-                padding: "0 11px",
-              }}
-            >
-              <span>玩籽抵扣</span>
-              <DownFill fontSize={12} />
-            </div>
-          </div>
-        </div>
-      </div>
+                <div className="m-[11px] mt-0">
+                    <div onClick={() => navigate("/detail")}>
+                        <img src={activity1} />
+                    </div>
 
-      {/* 活动列表 */}
-      <div
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(251, 251, 251, 0.97) 0%, rgba(226, 156, 228, 0) 44%)",
-        }}
-      >
-        <div className="m-[11px] mt-0">
-          <div onClick={() => navigate("/detail")}>
-            <img src={activity1} />
-          </div>
+                    <div>
+                        <img src={activity2} />
+                    </div>
 
-          <div>
-            <img src={activity2} />
-          </div>
-
-          <div>
-            <img src={activity3} />
-          </div>
-          {/* <Card
+                    <div>
+                        <img src={activity3} />
+                    </div>
+                    {/* <Card
             style={
               { "--adm-card-padding-inline": "10px" } as React.CSSProperties
             }
@@ -301,8 +301,8 @@ export const Home = () => {
               </div>
             </div>
           </Card> */}
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };

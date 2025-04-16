@@ -1,161 +1,169 @@
 @import "tailwindcss";
 
 .adm-tab-bar-wrap {
-  overflow: visible !important;
+    overflow: visible !important;
 }
 
 .adm-tab-bar-item-title-with-icon {
-  margin-top: 8px !important;
-  margin-bottom: 3px !important;
+    margin-top: 8px !important;
+    margin-bottom: 3px !important;
 }
 
 .title-h2 {
-  font-size: 18px;
-  font-family: Source Han Sans SC-Medium, Source Han Sans SC;
-  font-weight: 600;
-  color: #1a1a1a;
-  line-height: 27px;
-  word-break: break-all;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+    font-size: 18px;
+    font-family: Source Han Sans SC-Medium, Source Han Sans SC;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 27px;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .tl-font {
-  font-size: 13px;
-  font-family: PingFang SC, PingFang SC;
-  font-weight: 400;
-  color: #767676;
-  line-height: 13px;
-  margin-right: 4px;
-  max-width: 126px;
-  word-break: break-all;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  line-height: normal !important;
+    font-size: 13px;
+    font-family: PingFang SC, PingFang SC;
+    font-weight: 400;
+    color: #767676;
+    line-height: 13px;
+    margin-right: 4px;
+    max-width: 126px;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: normal !important;
 }
 
 .tl-tribe-type {
-  height: 16px;
-  border-radius: 4px;
-  width: auto;
-  background-color: #454545;
-  padding: 0 3px;
-  border: 2px solid #a4c5e9;
-  -webkit-transform: skew(-15deg);
-  transform: skew(-15deg);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  span {
-    font-size: 11px;
-    line-height: 11px;
-    font-family: graceFont;
-    font-weight: 400;
-    text-align: center;
-    background: linear-gradient(90deg, #61f1ee 0%, #e29ce4 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+    height: 16px;
+    border-radius: 4px;
+    width: auto;
+    background-color: #454545;
+    padding: 0 3px;
+    border: 2px solid #a4c5e9;
+    -webkit-transform: skew(-15deg);
+    transform: skew(-15deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    span {
+        font-size: 11px;
+        line-height: 11px;
+        font-family: graceFont;
+        font-weight: 400;
+        text-align: center;
+        background: linear-gradient(90deg, #61f1ee 0%, #e29ce4 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 }
 
 .image-24 {
-  width: 16px;
-  height: 16px;
-  min-width: 16px;
-  .image-24-icon1 {
-    background-image: url(https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/time.png);
-    background-position: 0% 0%;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-  }
-  .image-24-icon2 {
-    background-image: url(https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/location.png);
-    background-position: 0% 0%;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-  }
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+
+    .image-24-icon1 {
+        background-image: url(https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/time.png);
+        background-position: 0% 0%;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+    }
+
+    .image-24-icon2 {
+        background-image: url(https://goin.obs.cn-north-4.myhuaweicloud.com/acticity/common/location.png);
+        background-position: 0% 0%;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+    }
 }
 
 .tl-line {
-  width: 0;
-  height: 13px;
-  border: 1px solid #c4c4c4;
-  margin: 0 5px;
+    width: 0;
+    height: 13px;
+    border: 1px solid #c4c4c4;
+    margin: 0 5px;
 }
 
 .register-btn {
-  color: #454545 !important;
-  background: #50f5ff !important;
-  border-radius: 25px !important;
-  border: none !important;
-  padding: 0 29px;
-  div {
-    font-family: AlibabaPuHuiTi, AlibabaPuHuiTi;
-    font-weight: 500;
-    font-size: 13px;
-    line-height: 27px;
-  }
+    color: #454545 !important;
+    background: #50f5ff !important;
+    border-radius: 25px !important;
+    border: none !important;
+    padding: 0 29px;
+
+    div {
+        font-family: AlibabaPuHuiTi, AlibabaPuHuiTi;
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 27px;
+    }
 }
 
 .tl-font-32-34 {
-  font-size: 15px;
-  font-family: Source Han Sans SC-Medium, Source Han Sans SC;
-  font-weight: 400;
-  line-height: 15px;
-  color: #342A25;
+    font-size: 15px;
+    font-family: Source Han Sans SC-Medium, Source Han Sans SC;
+    font-weight: 400;
+    line-height: 15px;
+    color: #342A25;
 }
 
-.bottom-menu{
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 93px;
-  padding: 0 17px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #FFFFFF;
-  box-shadow: 0px 0px 4px 0px rgba(147, 147, 147, 0.5);
-  z-index: 2;
+.bottom-menu {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 93px;
+    padding: 0 17px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 4px 0px rgba(147, 147, 147, 0.5);
+    z-index: 2;
 }
 
-.customTabs{
+.customTabs {
 
-  .adm-tabs-header{
-    border: none
-  }
-  .adm-tabs-tab-list{
-    width: 200px;
-    margin-left: 10px;
-  }
-  .adm-capsule-tabs-header{
-    border:none
-  }
+    .adm-tabs-header {
+        border: none
+    }
+
+    .adm-tabs-tab-list {
+        width: 200px;
+        margin-left: 10px;
+    }
+
+    .adm-capsule-tabs-header {
+        border: none
+    }
 
 }
 
-.customInnerTabs{
-  .adm-tabs-header{
-    border: none
-  }
-  .adm-tabs-tab-list{
-    width: auto;
-    margin-left: 10px;
-  }
-  .adm-capsule-tabs-header{
-    border:none
-  }
-  
+.customInnerTabs {
+    .adm-tabs-header {
+        border: none
+    }
+
+    .adm-tabs-tab-list {
+        width: auto;
+        margin-left: 10px;
+    }
+
+    .adm-capsule-tabs-header {
+        border: none
+    }
+
 }
 
-.custom-floating-bubble{
-  .adm-floating-bubble-button{
-    overflow: visible
-  }
+.custom-floating-bubble {
+    .adm-floating-bubble-button {
+        overflow: visible
+    }
 }
