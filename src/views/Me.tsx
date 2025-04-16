@@ -115,7 +115,7 @@ export const Me = () => {
                     />
                     <div className="flex flex-col">
                         <div className="flex items-center">
-                            <span className="text-xl font-bold">{userName}</span>
+                            <span className="text-xl font-bold">{userName || "David"}</span>
                         </div>
                         <div className="text-gray-500 text-sm mt-1">did: {`${address.slice(
                             0,
